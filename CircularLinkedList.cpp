@@ -116,7 +116,33 @@ void CircularLinkedList::insert(ElementType dataVal, int index)
 
 void CircularLinkedList::erase(int index)
 {
-    
+    if (empty() || index < 0 || index >= mySize) {
+        cerr << "Invalid index or list is empty" << endl;
+        return;
+    }
+
+    NodePointer toDelete;
+    if (index == 0) {
+        toDelete = first;
+        if (mySize == 1) {
+            first = nullptr;
+        } else {
+            first->prev->next = first->next;
+            first->next->prev = first->prev;
+            first = first->next;
+        }
+    } else {
+        NodePointer current = first;
+        for (int i = 0; i < index; i++) {
+            current = current->next;
+        }
+        toDelete = current;
+        current->prev->next = current->next;
+        current->next->prev = current->prev;
+    }
+
+    delete toDelete;
+    mySize--;
 }
 
 int CircularLinkedList::search(ElementType dataVal)
@@ -144,7 +170,17 @@ int CircularLinkedList::search(ElementType dataVal)
 
 void CircularLinkedList::display(ostream& out) const
 {
-    
+    if (empty()) {
+        out << "List is empty" << endl;
+        return;
+    }
+
+    NodePointer current = first;
+    while (current != first) {
+        out << current->data << " ";
+        current = current->next;
+    }
+    out << endl;
 }
 
 ostream& operator<<(ostream& out, const CircularLinkedList& aList)
