@@ -1,7 +1,3 @@
-//
-// Created by Kiro on 11/19/2023.
-//
-
 #ifndef VIDEO_PLAYER_DATA_STRUCTURES_CIRCULAR_LINKED_LIST_H
 #define VIDEO_PLAYER_DATA_STRUCTURES_CIRCULAR_LINKED_LIST_H
 
@@ -15,8 +11,9 @@ private:
     public:
         ElementType data;
         Node* next;
-        Node() : next(0) {}
-        Node(ElementType dataValue) : data(dataValue), next(0) {}
+        Node* prev;
+        Node() : next(0),prev(0) {}
+        Node(ElementType dataValue) : data(dataValue), next(0),prev(0) {}
     };
 
     typedef Node* NodePointer;
@@ -29,7 +26,7 @@ public:
     ~CircularLinkedList(); // fadel
     const CircularLinkedList& operator=(const CircularLinkedList& rightSide); // nezar
     bool empty(); // fadel
-    void insert(ElementType dataVal, int index); // kiro
+    void insert(ElementType dataVal, int pos); // kiro
     void erase(int index); // abdulrahman
     int search(ElementType dataVal); // Nezar 
     void display(ostream& out) const; // abdulrahman

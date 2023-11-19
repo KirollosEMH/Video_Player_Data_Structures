@@ -4,19 +4,16 @@ CircularLinkedList::CircularLinkedList()
 {
 }
 
-CircularLinkedList::CircularLinkedList(const CircularLinkedList& origList)
+CircularLinkedList::CircularLinkedList(const CircularLinkedList& origList): first(nullptr), mySize(origList.mySize)
 {
-    
 }
 
 CircularLinkedList::~CircularLinkedList()
-{
-    
+{   
 }
 
 const CircularLinkedList& CircularLinkedList::operator=(const CircularLinkedList& rightSide)
-{
-    
+{  
 }
 
 bool CircularLinkedList::empty()
@@ -24,9 +21,9 @@ bool CircularLinkedList::empty()
     
 }
 
+
 void CircularLinkedList::insert(ElementType dataVal, int index)
 {
-    
 }
 
 void CircularLinkedList::erase(int index)
