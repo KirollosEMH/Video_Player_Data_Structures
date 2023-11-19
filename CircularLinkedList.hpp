@@ -24,17 +24,17 @@ private:
     int mySize;
 
 public:
-    CircularLinkedList();
-    CircularLinkedList(const CircularLinkedList& origList);
-    ~CircularLinkedList();
-    const CircularLinkedList& operator=(const CircularLinkedList& rightSide);
-    bool empty();
-    void insert(ElementType dataVal, int index);
-    void erase(int index);
-    int search(ElementType dataVal);
-    void display(ostream& out) const;
+    CircularLinkedList(); // fadel 
+    CircularLinkedList(const CircularLinkedList& origList); // kiro
+    ~CircularLinkedList(); // fadel
+    const CircularLinkedList& operator=(const CircularLinkedList& rightSide); // nezar
+    bool empty(); // fadel
+    void insert(ElementType dataVal, int index); // kiro
+    void erase(int index); // abdulrahman
+    int search(ElementType dataVal); // Nezar 
+    void display(ostream& out) const; // abdulrahman
 };
 
-ostream& operator<<(ostream& out, const CircularLinkedList& aList);
+ostream& operator<<(ostream& out, const CircularLinkedList& aList); // nezar
 
 #endif //VIDEO_PLAYER_DATA_STRUCTURES_CIRCULAR_LINKED_LIST_H
