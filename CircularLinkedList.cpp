@@ -42,15 +42,16 @@ const CircularLinkedList& CircularLinkedList::operator=(const CircularLinkedList
         first = new Node(rightSide.first->data);
         lastPtr = first;
         origPtr = rightSide.first->next;
-        while (lastPtr != 0)
+       while (origPtr != rightSide.first)
         {
-            lastPtr->next = new Node(origPtr->data);
-            origPtr = origPtr->next;
-            lastPtr -> next -> prev = lastPtr;
-            lastPtr = lastPtr->next;
+              NodePointer newNode = new Node(origPtr->data);
+              lastPtr->next = newNode;
+              lastPtr -> next -> prev = lastPtr;
+              lastPtr = lastPtr->next;
+              origPtr = origPtr->next;
         }
-        lastPtr -> next = first;
-        first -> prev = lastPtr; 
+        lastPtr->next = first;
+        first->prev = lastPtr; 
     }
     return *this;
     
