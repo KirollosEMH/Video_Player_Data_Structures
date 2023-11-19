@@ -26,8 +26,7 @@ CircularLinkedList::CircularLinkedList(const CircularLinkedList& origList): firs
     first->prev = newCurrent;
 }
 
-CircularLinkedList::~CircularLinkedList()
-{  
+CircularLinkedList::~CircularLinkedList() {
     NodePointer current = first;
     do {
         NodePointer next = current->next;
@@ -37,7 +36,6 @@ CircularLinkedList::~CircularLinkedList()
     
     first = nullptr;
     mySize = 0; 
-
 }
 
 const CircularLinkedList& CircularLinkedList::operator=(const CircularLinkedList& rightSide)
@@ -50,7 +48,7 @@ const CircularLinkedList& CircularLinkedList::operator=(const CircularLinkedList
 
     if (this != &rightSide)
     {
-        this -> ~CircularLinkedList();
+        // this -> ~CircularLinkedList();
         NodePointer origPtr, lastPtr;
         first = new Node(rightSide.first->data);
         lastPtr = first;
