@@ -27,15 +27,20 @@ CircularLinkedList::CircularLinkedList(const CircularLinkedList& origList): firs
 }
 
 CircularLinkedList::~CircularLinkedList() {
+    if (first == nullptr) {
+        return; 
+    }
     NodePointer current = first;
-    do {
+    NodePointer last = first->prev; 
+
+    while (current != last) {
         NodePointer next = current->next;
         delete current;
         current = next;
-    } while (current != nullptr);
-    
+    }
+    delete last;
     first = nullptr;
-    mySize = 0; 
+    mySize = 0;
 }
 
 const CircularLinkedList& CircularLinkedList::operator=(const CircularLinkedList& rightSide)
