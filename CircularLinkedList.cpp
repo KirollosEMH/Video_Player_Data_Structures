@@ -135,6 +135,6 @@ void CircularLinkedList::display(ostream& out) const
 
 ostream& operator<<(ostream& out, const CircularLinkedList& aList)
 {
-    
-
+    aList.display(out);
+    return out;
 }
