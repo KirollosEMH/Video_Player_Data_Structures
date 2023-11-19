@@ -2,6 +2,9 @@
 
 CircularLinkedList::CircularLinkedList()
 {
+    first = NULL;
+    mySize = 0;
+    
 }
 
 CircularLinkedList::CircularLinkedList(const CircularLinkedList& origList): first(nullptr), mySize(origList.mySize)
@@ -24,7 +27,17 @@ CircularLinkedList::CircularLinkedList(const CircularLinkedList& origList): firs
 }
 
 CircularLinkedList::~CircularLinkedList()
-{   
+{  
+    NodePointer current = first;
+    do {
+        NodePointer next = current->next;
+        delete current;
+        current = next;
+    } while (current != nullptr);
+    
+    first = nullptr;
+    mySize = 0; 
+
 }
 
 const CircularLinkedList& CircularLinkedList::operator=(const CircularLinkedList& rightSide)
@@ -59,7 +72,7 @@ const CircularLinkedList& CircularLinkedList::operator=(const CircularLinkedList
 
 bool CircularLinkedList::empty()
 {
-    
+    return first == nullptr;; 
 }
 
 void CircularLinkedList::insert(ElementType dataVal, int index)
