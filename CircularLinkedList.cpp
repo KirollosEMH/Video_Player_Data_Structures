@@ -53,7 +53,7 @@ const CircularLinkedList& CircularLinkedList::operator=(const CircularLinkedList
 
     if (this != &rightSide)
     {
-        // this -> ~CircularLinkedList();
+        this -> ~CircularLinkedList();
         NodePointer origPtr, lastPtr;
         first = new Node(rightSide.first->data);
         lastPtr = first;
