@@ -70,7 +70,7 @@ const CircularLinkedList& CircularLinkedList::operator=(const CircularLinkedList
     
 }
 
-bool CircularLinkedList::empty()
+bool CircularLinkedList::empty() const
 {
     return first == nullptr;; 
 }
@@ -176,10 +176,13 @@ void CircularLinkedList::display(ostream& out) const
     }
 
     NodePointer current = first;
-    while (current != first) {
+    do
+    {
         out << current->data << " ";
         current = current->next;
-    }
+    } while (current != first);
+    
+    
     out << endl;
 }
 

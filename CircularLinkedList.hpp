@@ -25,7 +25,7 @@ public:
     CircularLinkedList(const CircularLinkedList& origList); // kiro
     ~CircularLinkedList(); // fadel
     const CircularLinkedList& operator=(const CircularLinkedList& rightSide); // nezar
-    bool empty(); // fadel
+    bool empty() const; // fadel
     void insert(ElementType dataVal, int pos); // kiro
     void erase(int index); // abdulrahman
     int search(ElementType dataVal); // Nezar 
