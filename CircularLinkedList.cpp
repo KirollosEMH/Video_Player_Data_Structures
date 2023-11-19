@@ -29,6 +29,30 @@ CircularLinkedList::~CircularLinkedList()
 
 const CircularLinkedList& CircularLinkedList::operator=(const CircularLinkedList& rightSide)
 {  
+    mySize = rightSide.mySize;
+    if (mySize == 0) {
+        first = 0;
+        return *this;
+    }
+
+    if (this != &rightSide)
+    {
+        this -> ~CircularLinkedList();
+        NodePointer origPtr, lastPtr;
+        first = new Node(rightSide.first->data);
+        lastPtr = first;
+        origPtr = rightSide.first->next;
+        while (lastPtr != 0)
+        {
+            lastPtr->next = new Node(origPtr->data);
+            origPtr = origPtr->next;
+            lastPtr -> next -> prev = lastPtr;
+            lastPtr = lastPtr->next;
+        }
+        lastPtr -> next = first;
+        first -> prev = lastPtr; 
+    }
+    return *this;
     
 }
 
