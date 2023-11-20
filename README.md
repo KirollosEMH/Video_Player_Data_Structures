@@ -13,7 +13,6 @@
    mv commit-msg .git/hooks
    ```
 
-
 Now, commits must start with one of the following prefixes:
 - `add:`
 - `fix:`
