@@ -152,20 +152,20 @@ int CircularLinkedList::search(ElementType dataVal)
 {
     if (empty())
     {
-        cerr << "The list is empty, returning -1" << endl;
+        cerr << "The list is empty, returning garbage: ";
         return -1;
     }
     
     int index = 0;
     NodePointer ptr = first;
-    while (ptr ->data != dataVal && ptr != nullptr)
+    while (ptr ->data != dataVal && index < mySize)
     {
         ptr = ptr -> next;
         index++;
     }
-    if (ptr == nullptr)
+    if (index == mySize)
     {
-        cerr << "The value is not found" << endl;
+        cerr << "The value is not found garbage value returned: ";
         index = -1;
     }
     return index;
