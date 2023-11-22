@@ -3,8 +3,8 @@
 
 #include <iostream>
 using namespace std;
-typedef int ElementType;
 
+template <typename ElementType>
 class CircularLinkedList {
 private:
     class Node {
@@ -12,8 +12,8 @@ private:
         ElementType data;
         Node* next;
         Node* prev;
-        Node() : next(0),prev(0) {}
-        Node(ElementType dataValue) : data(dataValue), next(0),prev(0) {}
+        Node() : next(nullptr), prev(nullptr) {}
+        Node(ElementType dataValue) : data(dataValue), next(nullptr), prev(nullptr) {}
     };
 
     typedef Node* NodePointer;
@@ -21,17 +21,18 @@ private:
     int mySize;
 
 public:
-    CircularLinkedList(); // fadel 
+    CircularLinkedList(); // fadel
     CircularLinkedList(const CircularLinkedList& origList); // kiro
     ~CircularLinkedList(); // fadel
     const CircularLinkedList& operator=(const CircularLinkedList& rightSide); // nezar
     bool empty() const; // fadel
     void insert(ElementType dataVal, int pos); // kiro
     void erase(int index); // abdulrahman
-    int search(ElementType dataVal); // Nezar 
+    int search(ElementType dataVal); // Nezar
     void display(ostream& out) const; // abdulrahman
 };
 
-ostream& operator<<(ostream& out, const CircularLinkedList& aList); // nezar
+template <typename ElementType>
+ostream& operator<<(ostream& out, const CircularLinkedList<ElementType>& aList); // nezar
 
-#endif //VIDEO_PLAYER_DATA_STRUCTURES_CIRCULAR_LINKED_LIST_H
+#endif // VIDEO_PLAYER_DATA_STRUCTURES_CIRCULAR_LINKED_LIST

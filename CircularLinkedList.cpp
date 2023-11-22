@@ -1,13 +1,15 @@
 #include "CircularLinkedList.hpp"
 
-CircularLinkedList::CircularLinkedList()
+template <typename ElementType>
+CircularLinkedList<ElementType>::CircularLinkedList()
 {
     first = NULL;
     mySize = 0;
     
 }
 
-CircularLinkedList::CircularLinkedList(const CircularLinkedList& origList): first(nullptr), mySize(origList.mySize)
+template <typename ElementType>
+CircularLinkedList<ElementType>::CircularLinkedList(const CircularLinkedList& origList): first(nullptr), mySize(origList.mySize)
 {
     NodePointer origCurrent = origList.first;
     NodePointer newCurrent = new Node(origCurrent->data);
@@ -26,7 +28,8 @@ CircularLinkedList::CircularLinkedList(const CircularLinkedList& origList): firs
     first->prev = newCurrent;
 }
 
-CircularLinkedList::~CircularLinkedList() {
+template <typename ElementType>
+CircularLinkedList<ElementType>::~CircularLinkedList() {
     if (first == nullptr) {
         return; 
     }
@@ -43,7 +46,8 @@ CircularLinkedList::~CircularLinkedList() {
     mySize = 0;
 }
 
-const CircularLinkedList& CircularLinkedList::operator=(const CircularLinkedList& rightSide)
+template <typename ElementType>
+const CircularLinkedList<ElementType>& CircularLinkedList<ElementType>::operator=(const CircularLinkedList& rightSide)
 {  
     mySize = rightSide.mySize;
     if (mySize == 0) {
@@ -73,12 +77,14 @@ const CircularLinkedList& CircularLinkedList::operator=(const CircularLinkedList
     
 }
 
-bool CircularLinkedList::empty() const
+template <typename ElementType>
+bool CircularLinkedList<ElementType>::empty() const
 {
     return first == nullptr;; 
 }
 
-void CircularLinkedList::insert(ElementType dataVal, int index)
+template <typename ElementType>
+void CircularLinkedList<ElementType>::insert(ElementType dataVal, int index)
 {
     if (index < 0 || index > mySize) {
         cout << "Invalid index\n";
@@ -114,10 +120,9 @@ void CircularLinkedList::insert(ElementType dataVal, int index)
 
     mySize++;
 }
-    
 
-
-void CircularLinkedList::erase(int index)
+template <typename ElementType>
+void CircularLinkedList<ElementType>::erase(int index)
 {
     if (empty() || index < 0 || index >= mySize) {
         cerr << "Invalid index or list is empty" << endl;
@@ -148,7 +153,8 @@ void CircularLinkedList::erase(int index)
     mySize--;
 }
 
-int CircularLinkedList::search(ElementType dataVal)
+template <typename ElementType>
+int CircularLinkedList<ElementType>::search(ElementType dataVal)
 {
     if (empty())
     {
@@ -171,7 +177,8 @@ int CircularLinkedList::search(ElementType dataVal)
     return index;
 }
 
-void CircularLinkedList::display(ostream& out) const
+template <typename ElementType>
+void CircularLinkedList<ElementType>::display(ostream& out) const
 {
     if (empty()) {
         out << "List is empty" << endl;
@@ -189,8 +196,17 @@ void CircularLinkedList::display(ostream& out) const
     out << endl;
 }
 
-ostream& operator<<(ostream& out, const CircularLinkedList& aList)
+template <typename ElementType>
+ostream& operator<<(ostream& out, const CircularLinkedList<ElementType>& aList)
 {
     aList.display(out);
     return out;
 }
+
+template class CircularLinkedList<int>;
+template class CircularLinkedList<double>;
+template class CircularLinkedList<string>;
+
+template ostream& operator<<(ostream& out, const CircularLinkedList<int>& aList);
+template ostream& operator<<(ostream& out, const CircularLinkedList<double>& aList);
+template ostream& operator<<(ostream& out, const CircularLinkedList<string>& aList);
