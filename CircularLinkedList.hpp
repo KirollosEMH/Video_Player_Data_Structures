@@ -18,6 +18,7 @@ private:
 
     typedef Node* NodePointer;
     NodePointer first;
+    NodePointer currentPtr;
     int mySize;
 
 public:
@@ -30,6 +31,12 @@ public:
     void erase(int index); // abdulrahman
     int search(ElementType dataVal); // Nezar
     void display(ostream& out) const; // abdulrahman
+    int getSize() const; // kiro
+    void rotateNext(); // abdulrahman
+    void rotatePrevious(); // abdulrahman
+    ElementType getCurrentData() const; // abdulrahman
+    void clear(); // abdulrahman
+
 };
 
 template <typename ElementType>
