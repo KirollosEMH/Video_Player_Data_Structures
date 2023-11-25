@@ -1,19 +1,21 @@
 #include "CircularLinkedList.hpp"
+#include <opencv2/opencv.hpp>
 
 template <typename ElementType>
 CircularLinkedList<ElementType>::CircularLinkedList()
 {
-    first = NULL;
+    first = nullptr;
     mySize = 0;
-    
+    currentPtr = nullptr;
 }
 
 template <typename ElementType>
-CircularLinkedList<ElementType>::CircularLinkedList(const CircularLinkedList& origList): first(nullptr), mySize(origList.mySize)
+CircularLinkedList<ElementType>::CircularLinkedList(const CircularLinkedList& origList): first(nullptr), mySize(origList.mySize), currentPtr(nullptr)
 {
     NodePointer origCurrent = origList.first;
     NodePointer newCurrent = new Node(origCurrent->data);
     first = newCurrent;
+    currentPtr = newCurrent;
 
     origCurrent = origCurrent->next;
     while (origCurrent != origList.first) {
@@ -60,6 +62,7 @@ const CircularLinkedList<ElementType>& CircularLinkedList<ElementType>::operator
         this -> ~CircularLinkedList();
         NodePointer origPtr, lastPtr;
         first = new Node(rightSide.first->data);
+        currentPtr = first;
         lastPtr = first;
         origPtr = rightSide.first->next;
        while (origPtr != rightSide.first)
@@ -94,6 +97,7 @@ void CircularLinkedList<ElementType>::insert(ElementType dataVal, int index)
 
     if (empty()) {
         first = newNode;
+        currentPtr = newNode;
         first->next = first;
         first->prev = first;
     } else if (index == 0) {
@@ -161,7 +165,7 @@ int CircularLinkedList<ElementType>::search(ElementType dataVal)
         cerr << "The list is empty, returning garbage: ";
         return -1;
     }
-    
+
     int index = 0;
     NodePointer ptr = first;
     while (ptr ->data != dataVal && index < mySize)
@@ -191,9 +195,42 @@ void CircularLinkedList<ElementType>::display(ostream& out) const
         out << current->data << " ";
         current = current->next;
     } while (current != first);
-    
-    
+
+
     out << endl;
+}
+
+template <typename ElementType>
+int CircularLinkedList<ElementType>::getSize() const
+{
+    return mySize;
+}
+
+template <typename ElementType>
+void CircularLinkedList<ElementType>::rotateNext() {
+    if (currentPtr != nullptr) {
+        currentPtr = currentPtr->next;
+    }
+}
+
+template <typename ElementType>
+void CircularLinkedList<ElementType>::rotatePrevious() {
+    if (currentPtr != nullptr) {
+        currentPtr = currentPtr->prev;
+    }
+}
+
+template <typename ElementType>
+void CircularLinkedList<ElementType>::clear() {
+    while (!empty()) {
+        erase(0);
+    }
+    currentPtr = nullptr;
+}
+
+template <typename ElementType>
+ElementType CircularLinkedList<ElementType>::getCurrentData() const {
+    return (currentPtr != nullptr) ? currentPtr->data : ElementType();
 }
 
 template <typename ElementType>
@@ -206,7 +243,9 @@ ostream& operator<<(ostream& out, const CircularLinkedList<ElementType>& aList)
 template class CircularLinkedList<int>;
 template class CircularLinkedList<double>;
 template class CircularLinkedList<string>;
+//template class CircularLinkedList<cv::VideoCapture>;
 
 template ostream& operator<<(ostream& out, const CircularLinkedList<int>& aList);
 template ostream& operator<<(ostream& out, const CircularLinkedList<double>& aList);
 template ostream& operator<<(ostream& out, const CircularLinkedList<string>& aList);
+//template ostream& operator<<(ostream& out, const CircularLinkedList<cv::VideoCapture>& aList);
