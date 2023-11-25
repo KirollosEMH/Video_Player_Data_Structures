@@ -1,51 +1,118 @@
-#include "CircularLinkedList.hpp"
-// #include<opencv2/opencv.hpp>
-#include <iostream>
-using namespace std;
-// using namespace cv;
+// VideoPlayer.cpp
+#include "VideoPlayer.h"
+#include <string>
 
-int main(){
-    CircularLinkedList<int> list1;
-    list1.insert(1, 0);
-    list1.insert(2, 1);
-    list1.insert(2, 0);
-    list1.insert(3, 2);
-    list1.insert(4, 3);
-    list1.insert(4, 3);
-    list1.insert(5, 4);
+VideoPlayer::VideoPlayer() : paused(false) {}
 
-    CircularLinkedList<int> list2(list1);
-    CircularLinkedList<int> list3;
-    list3 = list2;
+void VideoPlayer::add_Video(string videoPath) {
+    playlist.insert(videoPath, playlist.getSize());
+}
 
-    cout << "List1: " << list1;
-    cout << "List2: " << list2;
+void VideoPlayer::removeVideo(int index) {
+    if (index < 0 || index >= playlist.getSize()) {
+        cerr << "Invalid index for removing video." << endl;
+        return;
+    }
 
-    list3.erase(0);
-    list3.erase(0);
-    list3.erase(0);
-    cout << "List3: " << list3;
+    playlist.erase(index);
+    cout << "Removed video at index " << index << endl;
+}
 
-    list2.erase(0);
-    list2.erase(2);
-    list2.erase(4);
-    list2.erase(-10);
-    cout << "List2: " << list2;
+void VideoPlayer::playPlaylist() {
+    if (playlist.empty()) {
+        cout << "Playlist is empty." << endl;
+        return;
+    }
 
-    list1.erase(6);
-    cout << "List1: " << list1;
+    cout << "Playing playlist..." << endl;
 
-    cout << "List1 value 4 at location: " << list1.search(4) << endl;
-    cout << "List1 value 5 at location: " << list1.search(5) << endl;
-    cout << "List1 value 6 at location: " << list1.search(6) << endl;
+    while (!playlist.empty()) {
+        string videoPath = playlist.getCurrentData();
+        VideoCapture video(videoPath);
+        if (!video.isOpened()) {
+            cerr << "Error opening video file." << endl;
+            return;
+        }
+        double fps = video.get(CAP_PROP_FPS);
+        int originalWidth = video.get(CAP_PROP_FRAME_WIDTH);
+        int originalHeight = video.get(CAP_PROP_FRAME_HEIGHT);
+        namedWindow("Video Player", WINDOW_NORMAL);
+        resizeWindow("Video Player", originalWidth, originalHeight);
+        Mat frame;
+        while (true) {
+            if (!paused) {
+                if (!video.read(frame)) {
+                    break;
+                }
+                imshow("Video Player", frame);
+            }
 
-    list2.erase(0);
-    list2.erase(0);
-    list2.erase(0);
-    list2.erase(0);
-    cout << "List2: " << list2;
+            char c = (char) waitKey(1000 / static_cast<int>(fps));
+            if (c == 27) {
+                cout << "Escape key pressed. Exiting..." << endl;
+                exit(0);
+            }
+            else if (c == ' ') {
+                paused = !paused;
+            }
+            else if (c == 'n') {
+                playNextVideo();
+                break;
+            } else if (c == 'p') {
+                playPreviousVideo();
+                break;
+            }
+            else if (c == 'a') {
+                addVideoRuntime();
+                break;
+            }
+            else if (c == 'r') {
+                removeVideoRuntime();
+                break;
+            }
+            else if (c == 's') {
+                stopPlaylist();
+                break;
+            }
+        }
 
-    cout << "List2 value 4 at location: " << list2.search(4) << endl;
+        video.release();
+    }
+}
 
-    return 0;
+void VideoPlayer::playNextVideo() {
+    cout << "Playing next video..." << endl;
+    paused = false;
+    playlist.rotateNext();
+}
+
+void VideoPlayer::playPreviousVideo() {
+    cout << "Playing previous video..." << endl;
+    paused = false;
+    playlist.rotatePrevious();
+}
+
+void VideoPlayer::addVideoRuntime() {
+    string videoPath;
+    cout << "Enter the path of the video to add: ";
+    getline(cin, videoPath);
+    cout << videoPath;
+    add_Video(videoPath.substr(1, videoPath.length() - 2));
+}
+
+void VideoPlayer::removeVideoRuntime() {
+    int index;
+    cout << "Enter the index of the video to remove: ";
+    cin >> index;
+    removeVideo(index);
+}
+
+void VideoPlayer::stopPlaylist() {
+    playlist.clear();
+    paused = false;
+    cout << "Playlist stopped." << endl;
+}
+
+CircularLinkedList<string> VideoPlayer::getPlaylist() {
+    return playlist;
 }
