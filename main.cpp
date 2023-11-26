@@ -1,5 +1,5 @@
-#include "CircularLinkedList.hpp"
-#include "VideoPlayer.h"
+#include "CircularLinkedList/CircularLinkedList.hpp"
+#include "VideoPlayer/VideoPlayer.h"
 #include<opencv2/opencv.hpp>
 #include <iostream>
 using namespace std;
