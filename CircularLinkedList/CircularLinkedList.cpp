@@ -240,6 +240,34 @@ ostream& operator<<(ostream& out, const CircularLinkedList<ElementType>& aList)
     return out;
 }
 
+template<typename ElementType>
+void CircularLinkedList<ElementType>::organizeV1(ElementType dataVal, int pos) {
+
+    if (pos < 0 || pos > mySize) {
+        cerr << "Invalid position" << endl;
+        return;
+    }
+    int old_pos = search(dataVal);
+    if (old_pos == -1 || empty()){
+        cerr << "Value not found" << endl;
+        return;
+    }
+    NodePointer current = first;
+    for (int i = 0; i <= old_pos; i++) {
+        current = current->next;
+    }
+    NodePointer new_current = first;
+    for (int i = 0; i <= pos; i++) {
+        new_current = new_current->next;
+    }
+
+    ElementType Temp = current->data;
+    // replace the data in the two positions
+    current->data = new_current->data;
+    new_current->data = Temp;
+
+}
+
 template class CircularLinkedList<int>;
 template class CircularLinkedList<double>;
 template class CircularLinkedList<string>;

@@ -22,22 +22,25 @@ private:
     int mySize;
 
 public:
-    CircularLinkedList(); // fadel
-    CircularLinkedList(const CircularLinkedList& origList); // kiro
-    ~CircularLinkedList(); // fadel
-    const CircularLinkedList& operator=(const CircularLinkedList& rightSide); // nezar
-    bool empty() const; // fadel
-    void insert(ElementType dataVal, int pos); // kiro
-    void erase(int index); // abdulrahman
-    int search(ElementType dataVal); // Nezar
-    void display(ostream& out) const; // abdulrahman
-    int getSize() const; // kiro
-    void rotateNext(); // abdulrahman
-    void rotatePrevious(); // abdulrahman
-    ElementType getCurrentData() const; // abdulrahman
-    void clear(); // abdulrahman
+    CircularLinkedList();
+    CircularLinkedList(const CircularLinkedList& origList);
+    ~CircularLinkedList();
+    const CircularLinkedList& operator=(const CircularLinkedList& rightSide);
+    bool empty() const;
+    void insert(ElementType dataVal, int pos);
+    void erase(int index);
+    int search(ElementType dataVal);
+    void display(ostream& out) const;
+    int getSize() const;
+    void rotateNext();
+    void rotatePrevious();
+    ElementType getCurrentData() const;
+    void clear();
+    void organizeV1(ElementType dataVal, int pos);
 
 };
+
+
 
 template <typename ElementType>
 ostream& operator<<(ostream& out, const CircularLinkedList<ElementType>& aList); // nezar
