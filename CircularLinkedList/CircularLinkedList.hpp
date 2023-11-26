@@ -37,6 +37,7 @@ public:
     ElementType getCurrentData() const;
     void clear();
     void organizeV1(ElementType dataVal, int pos);
+    void organizeV2(ElementType dataVal, int pos);
 
 };
 

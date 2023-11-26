@@ -268,6 +268,20 @@ void CircularLinkedList<ElementType>::organizeV1(ElementType dataVal, int pos) {
 
 }
 
+template<typename ElementType>
+void CircularLinkedList<ElementType>::organizeV2(ElementType dataVal, int pos){
+    if (pos < 0 || pos > mySize) {
+        cerr << "Invalid position" << endl;
+        return;
+    }
+    int old_pos = search(dataVal);
+    if (old_pos == -1 || empty()){
+        cerr << "Value not found" << endl;
+        return;
+    }
+    erase(old_pos);
+    insert(dataVal, pos);
+}
 template class CircularLinkedList<int>;
 template class CircularLinkedList<double>;
 template class CircularLinkedList<string>;
