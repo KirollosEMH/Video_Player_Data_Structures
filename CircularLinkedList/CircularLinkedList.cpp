@@ -253,11 +253,11 @@ void CircularLinkedList<ElementType>::organizeV1(ElementType dataVal, int pos) {
         return;
     }
     NodePointer current = first;
-    for (int i = 0; i <= old_pos; i++) {
+    for (int i = 0; i < old_pos; i++) {
         current = current->next;
     }
     NodePointer new_current = first;
-    for (int i = 0; i <= pos; i++) {
+    for (int i = 0; i < pos; i++) {
         new_current = new_current->next;
     }
 
