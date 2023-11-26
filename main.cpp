@@ -9,12 +9,12 @@ int main(){
     VideoPlayer player;
 
     // Add videos to the playlist
-    player.add_Video("D:/ASU/5 Fall 23/Data Structures/TestProject/video2.mp4");
-    player.add_Video("D:/ASU/5 Fall 23/Data Structures/TestProject/video3.mp4");
-    player.add_Video("D:/ASU/5 Fall 23/Data Structures/TestProject/video4.mp4");
+    player.add_Video("../Videos/video2.mp4");
+    player.add_Video("../Videos/video3.mp4");
+    player.add_Video("../Videos/video4.mp4");
 
     player.getPlaylist().display(cout);
-    cout << player.getPlaylist().search("D:/ASU/5 Fall 23/Data Structures/TestProject/video4.mp4") << endl;
+    cout << player.getPlaylist().search("../Videos/video4.mp4") << endl;
 
     // Play the playlist
     player.playPlaylist();
