@@ -12,22 +12,24 @@ CircularLinkedList<ElementType>::CircularLinkedList()
 template <typename ElementType>
 CircularLinkedList<ElementType>::CircularLinkedList(const CircularLinkedList& origList): first(nullptr), mySize(origList.mySize), currentPtr(nullptr)
 {
-    NodePointer origCurrent = origList.first;
-    NodePointer newCurrent = new Node(origCurrent->data);
-    first = newCurrent;
-    currentPtr = newCurrent;
+    if (!origList.empty()) {
+        first = new Node(origList.first->data);
+        currentPtr = first;
 
-    origCurrent = origCurrent->next;
-    while (origCurrent != origList.first) {
-        NodePointer newNode = new Node(origCurrent->data);
-        newCurrent->next = newNode;
-        newNode->prev = newCurrent;
-        newCurrent = newNode;
-        origCurrent = origCurrent->next;
+        NodePointer ptr = first;
+        NodePointer orig = origList.first->next;
+        while (orig != origList.first) {
+            NodePointer newNode = new Node(orig->data);
+            ptr->next = newNode;
+            newNode->prev = ptr;
+            ptr = newNode;
+            orig = orig->next;
+        }
+
+        ptr->next = first;
+        first->prev = ptr;
     }
 
-    newCurrent->next = first;
-    first->prev = newCurrent;
 }
 
 template <typename ElementType>
