@@ -36,14 +36,14 @@ public:
     void rotatePrevious();
     ElementType getCurrentData() const;
     void clear();
-    void organizeV1(ElementType dataVal, int pos);
-    void organizeV2(ElementType dataVal, int pos);
+    void organizeBySwap(ElementType dataVal, int pos);
+    void organizeByShift(ElementType dataVal, int pos);
 
 };
 
 
 
 template <typename ElementType>
-ostream& operator<<(ostream& out, const CircularLinkedList<ElementType>& aList); // nezar
+ostream& operator<<(ostream& out, const CircularLinkedList<ElementType>& aList);
 
 #endif // VIDEO_PLAYER_DATA_STRUCTURES_CIRCULAR_LINKED_LIST

@@ -241,7 +241,7 @@ ostream& operator<<(ostream& out, const CircularLinkedList<ElementType>& aList)
 }
 
 template<typename ElementType>
-void CircularLinkedList<ElementType>::organizeV1(ElementType dataVal, int pos) {
+void CircularLinkedList<ElementType>::organizeBySwap(ElementType dataVal, int pos) {
 
     if (pos < 0 || pos > mySize) {
         cerr << "Invalid position" << endl;
@@ -269,7 +269,7 @@ void CircularLinkedList<ElementType>::organizeV1(ElementType dataVal, int pos) {
 }
 
 template<typename ElementType>
-void CircularLinkedList<ElementType>::organizeV2(ElementType dataVal, int pos){
+void CircularLinkedList<ElementType>::organizeByShift(ElementType dataVal, int pos){
     if (pos < 0 || pos > mySize) {
         cerr << "Invalid position" << endl;
         return;
