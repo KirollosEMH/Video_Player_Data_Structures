@@ -5,7 +5,85 @@
 using namespace std;
 using namespace cv;
 
+#define CIRCULAR_TEST
+
 int main(){
+#ifdef CIRCULAR_TEST
+    // default constructor test
+    CircularLinkedList<int> list1;
+
+    // insert test
+    list1.insert(1, 0);
+    list1.insert(2, 1);
+    list1.insert(3, 2);
+    list1.insert(4, 3);
+    cout << "list1 after insert: " << endl;
+    list1.display(cout);
+
+    // copy constructor test
+    CircularLinkedList<int> list2(list1);
+    cout << "list2 after copy constructor: " << endl;
+    list2.display(cout);
+
+    // assignment operator test
+    CircularLinkedList<int> list3;
+    list3 = list1;
+    cout << "list3 after assignment operator: " << endl;
+    list3.display(cout);
+
+    // erase test
+    cout << "list3 before erasing index(0): " << endl;
+    list3.display(cout);
+    list3.erase(0);
+    list3.display(cout);
+
+    // search test
+    cout << "Index of 3 in list3:  " << list3.search(3) << endl;
+
+    // organizeBySwap test
+    cout << "list3 before organizeBySwap: " << endl;
+    list3.display(cout);
+    list3.organizeBySwap(3,0);
+    list3.display(cout);
+
+    // organizeByShift test
+    cout << "list3 before organizeByShift: " << endl;
+    list3.display(cout);
+    list3.organizeByShift(4,0);
+    list3.display(cout);
+
+    // size test
+    cout << "Size of list3: " << list3.getSize() << endl;
+
+    // clear test
+    cout << "list3 before clear: " << endl;
+    list3.display(cout);
+    list3.clear();
+    list3.display(cout);
+
+    // empty test
+    cout << "list3 empty? " << list3.empty() << endl;
+
+    // destructor test
+    list1.~CircularLinkedList();
+
+    // getCurrent test
+    cout << "list2: " << endl;
+    list2.display(cout);
+    cout << "list2 current data: ";
+    cout << list2.getCurrentData() << endl;
+
+    // rotateNext test
+    cout << "list2 current data after rotateNext: ";
+    list2.rotateNext();
+    cout << list2.getCurrentData() << endl;
+
+    // rotatePrev test
+    cout << "list2 current data after rotatePrev: ";
+    list2.rotatePrevious();
+    cout << list2.getCurrentData() << endl;
+
+#else
     VideoPlayer player;
 
     // Add videos to the playlist
@@ -18,49 +96,6 @@ int main(){
 
     // Play the playlist
     player.playPlaylist();
-
-
-//    CircularLinkedList<int> list1;
-//    list1.insert(1, 0);
-//    list1.insert(2, 1);
-//    list1.insert(2, 0);
-//    list1.insert(3, 2);
-//    list1.insert(4, 3);
-//    list1.insert(4, 3);
-//    list1.insert(5, 4);
-//
-//    CircularLinkedList<int> list2(list1);
-//    CircularLinkedList<int> list3;
-//    list3 = list2;
-//
-//    cout << "List1: " << list1;
-//    cout << "List2: " << list2;
-//
-//    list3.erase(0);
-//    list3.erase(0);
-//    list3.erase(0);
-//    cout << "List3: " << list3;
-//
-//    list2.erase(0);
-//    list2.erase(2);
-//    list2.erase(4);
-//    list2.erase(-10);
-//    cout << "List2: " << list2;
-//
-//    list1.erase(6);
-//    cout << "List1: " << list1;
-//
-//    cout << "List1 value 4 at location: " << list1.search(4) << endl;
-//    cout << "List1 value 5 at location: " << list1.search(5) << endl;
-//    cout << "List1 value 6 at location: " << list1.search(6) << endl;
-//
-//    list2.erase(0);
-//    list2.erase(0);
-//    list2.erase(0);
-//    list2.erase(0);
-//    cout << "List2: " << list2;
-//
-//    cout << "List2 value 4 at location: " << list2.search(4) << endl;
-
     return 0;
+#endif
 }
