@@ -34,10 +34,9 @@ CircularLinkedList<ElementType>::CircularLinkedList(const CircularLinkedList& or
 
 template <typename ElementType>
 CircularLinkedList<ElementType>::~CircularLinkedList() {
-    NodePointer last = nullptr;
+    NodePointer current = first;
     if (first != nullptr) {
-        NodePointer current = first;
-        last = first->prev;
+        NodePointer last = first->prev;
 
         while (current != last) {
             NodePointer next = current->next;
@@ -45,7 +44,7 @@ CircularLinkedList<ElementType>::~CircularLinkedList() {
             current = next;
         }
     }
-    delete last;
+    delete current;
     first = nullptr;
     mySize = 0;
 }
