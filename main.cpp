@@ -69,6 +69,14 @@ int main(){
     // empty test
     cout << "list3 empty? " << list3.empty() << endl;
 
+    CircularLinkedList <int> list5;
+    list5 = list2 = list1;
+    cout << "list5 after assignment operator: " << endl;
+    list5.display(cout);
+
+    cout << "list2 after assignment operator: " << endl;
+    list2.display(cout);
+
     // destructor test
     list1.~CircularLinkedList();
 
