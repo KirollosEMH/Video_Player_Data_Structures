@@ -52,16 +52,15 @@ CircularLinkedList<ElementType>::~CircularLinkedList() {
 
 template <typename ElementType>
 const CircularLinkedList<ElementType>& CircularLinkedList<ElementType>::operator=(const CircularLinkedList& rightSide)
-{  
-    mySize = rightSide.mySize;
-    if (mySize == 0) {
+{
+    if (rightSide.empty()){
         first = 0;
         return *this;
     }
-
     if (this != &rightSide)
     {
         this -> ~CircularLinkedList();
+        mySize = rightSide.mySize;
         NodePointer origPtr, lastPtr;
         first = new Node(rightSide.first->data);
         currentPtr = first;

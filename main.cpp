@@ -61,6 +61,11 @@ int main(){
     list3.clear();
     list3.display(cout);
 
+    CircularLinkedList <int> list4;
+    list4 = list3;
+    cout << "list4 after assignment operator: " << endl;
+    list4.display(cout);
+
     // empty test
     cout << "list3 empty? " << list3.empty() << endl;
 
