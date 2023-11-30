@@ -31,14 +31,18 @@ int main(){
     cout << "list3 after assignment operator: " << endl;
     list3.display(cout);
 
-
-
-
     // erase test
     cout << "list3 before erasing index(0): " << endl;
     list3.display(cout);
     list3.erase(0);
     cout << "list3 after erasing index(0): " << endl;
+    list3.display(cout);
+
+    // erase test exception
+    cout << "list3 before erasing index(125): " << endl;
+    list3.display(cout);
+    list3.erase(125);
+    cout << "list3 after erasing index(125): " << endl;
     list3.display(cout);
 
     // assignment operator test
@@ -50,6 +54,9 @@ int main(){
 
     // search test
     cout << "Index of 3 in list3:  " << list3.search(3) << endl;
+
+    // search test exception
+    cout << "Index of 125 in list3:  " << list3.search(125) << endl;
 
     // organizeBySwap test
     cout << "list3 before organizeBySwap (value of 3 to position 0): " << endl;
@@ -78,7 +85,6 @@ int main(){
     cout << "list3 after organizeByShift exception (value of 3 to position 3): " << endl;
     list3.organizeByShift(3,3);
     list3.display(cout);
-
 
     // size test
     cout << "Size of list3: " << list3.getSize() << endl;
