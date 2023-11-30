@@ -46,6 +46,7 @@ CircularLinkedList<ElementType>::~CircularLinkedList() {
     }
     delete current;
     first = nullptr;
+    currentPtr = nullptr;
     mySize = 0;
 }
 
