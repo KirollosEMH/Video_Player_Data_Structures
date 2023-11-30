@@ -106,11 +106,6 @@ void CircularLinkedList<ElementType>::insert(ElementType dataVal, int index)
         first->prev->next = newNode;
         first->prev = newNode;
         first = newNode;
-    } else if (index == mySize) {
-        newNode->next = first;
-        newNode->prev = first->prev;
-        first->prev->next = newNode;
-        first->prev = newNode;
     } else {
         NodePointer current = first;
         for (int i = 0; i < index - 1; i++) {
