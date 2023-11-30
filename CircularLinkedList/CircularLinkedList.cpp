@@ -54,7 +54,7 @@ template <typename ElementType>
 const CircularLinkedList<ElementType>& CircularLinkedList<ElementType>::operator=(const CircularLinkedList& rightSide)
 {
     if (rightSide.empty()){
-        first = 0;
+        this -> ~CircularLinkedList();
         return *this;
     }
     if (this != &rightSide)
