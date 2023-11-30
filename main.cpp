@@ -5,7 +5,7 @@
 using namespace std;
 using namespace cv;
 
-#define CIRCULAR_TEST
+//#define CIRCULAR_TEST
 
 int main(){
 #ifdef CIRCULAR_TEST

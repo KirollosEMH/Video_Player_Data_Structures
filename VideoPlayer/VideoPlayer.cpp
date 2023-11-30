@@ -104,6 +104,9 @@ void VideoPlayer::removeVideoRuntime() {
     int index;
     cout << "Enter the index of the video to remove: ";
     cin >> index;
+    if (index == playlist.search(playlist.getCurrentData())) {
+        playNextVideo();
+    }
     removeVideo(index);
 }
 
