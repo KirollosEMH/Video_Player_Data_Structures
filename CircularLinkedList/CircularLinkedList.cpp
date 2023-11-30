@@ -125,7 +125,7 @@ template <typename ElementType>
 void CircularLinkedList<ElementType>::erase(int index)
 {
     if (empty() || index < 0 || index >= mySize) {
-        cerr << "Invalid index or list is empty" << endl;
+        cout << "Invalid index or list is empty" << endl;
         return;
     }
 
@@ -158,7 +158,7 @@ int CircularLinkedList<ElementType>::search(ElementType dataVal)
 {
     if (empty())
     {
-        cerr << "The list is empty, returning garbage: ";
+        cout << "The list is empty, returning garbage: ";
         return -1;
     }
 
@@ -171,7 +171,7 @@ int CircularLinkedList<ElementType>::search(ElementType dataVal)
     }
     if (index == mySize)
     {
-        cerr << "The value is not found garbage value returned: ";
+        cout << "The value is not found garbage value returned: ";
         index = -1;
     }
     return index;
@@ -240,12 +240,12 @@ template<typename ElementType>
 void CircularLinkedList<ElementType>::organizeBySwap(ElementType dataVal, int pos) {
 
     if (pos < 0 || pos >= mySize) {
-        cerr << "Invalid position" << endl;
+        cout << "Invalid position" << endl;
         return;
     }
     int old_pos = search(dataVal);
     if (old_pos == -1 || empty()){
-        cerr << "Value not found" << endl;
+        cout << "Value not found" << endl;
         return;
     }
     NodePointer current = first;
@@ -267,12 +267,12 @@ void CircularLinkedList<ElementType>::organizeBySwap(ElementType dataVal, int po
 template<typename ElementType>
 void CircularLinkedList<ElementType>::organizeByShift(ElementType dataVal, int pos){
     if (pos < 0 || pos >= mySize) {
-        cerr << "Invalid position" << endl;
+        cout << "Invalid position" << endl;
         return;
     }
     int old_pos = search(dataVal);
     if (old_pos == -1 || empty()){
-        cerr << "Value not found" << endl;
+        cout << "Value not found" << endl;
         return;
     }
     erase(old_pos);
