@@ -122,6 +122,15 @@ int main(){
     list2.rotatePrevious();
     cout << list2.getCurrentData() << endl;
 
+    // creating a list of another type
+    cout << "Creating a list of another type:" << endl;
+    CircularLinkedList<string> list6;
+    list6.insert("Hello", 0);
+    list6.insert("World", 1);
+    list6.insert("!", 2);
+    cout << "list6 of string type: " << endl;
+    list6.display(cout);
+
 #else
     VideoPlayer player;
 
