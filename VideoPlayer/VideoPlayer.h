@@ -46,6 +46,10 @@ private:
 public:
     VideoPlayer();
 
+    void VideoPlayerMainMenu();
+
+    void PlaylistMenu();
+
     void createPlaylist();
 
     void deletePlaylist(int index);
@@ -67,6 +71,8 @@ public:
     void removeVideoRuntime();
 
     void stopPlaylist();
+
+    void displayPlaylists();
 
     CircularLinkedList<string> getCurrentPlaylist();
 

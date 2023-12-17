@@ -151,18 +151,9 @@ int main(){
     cout << "=============================" << endl;
 
 #else
-    VideoPlayer player;
+    VideoPlayer videoPlayer;
 
-    // Add videos to the playlist
-    player.add_Video("../Videos/video2.mp4");
-    player.add_Video("../Videos/video3.mp4");
-    player.add_Video("../Videos/video4.mp4");
-
-    player.getPlaylist().display(cout);
-    cout << player.getPlaylist().search("../Videos/video4.mp4") << endl;
-
-    // Play the playlist
-    player.playPlaylist();
+    videoPlayer.VideoPlayerMainMenu();
     return 0;
 #endif
 }
