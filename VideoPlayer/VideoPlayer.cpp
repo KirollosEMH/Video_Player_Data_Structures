@@ -105,6 +105,10 @@ void VideoPlayer::removeVideo(int index) {
 // Assuming the necessary headers are included and namespaces are used.
 
 void VideoPlayer::playPlaylist() {
+    if (currentPlaylist == nullptr){
+        cout << "No playlist selected. Please select a playlist first." << endl;
+        return;
+    }
     if (currentPlaylist->videos.empty()) {
         cout << "Playlist is empty." << endl;
         return;
