@@ -186,10 +186,12 @@ void CircularLinkedList<ElementType>::display(ostream& out) const
     }
 
     NodePointer current = first;
+    int Number = 1;
     do
     {
-        out << current->data << " ";
+        out << Number << ": " << current->data << " " << endl;
         current = current->next;
+        Number++;
     } while (current != first);
 
 

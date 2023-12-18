@@ -41,7 +41,6 @@ void VideoPlayer::PlaylistMenu() {
         cout << "4. Play Playlist" << endl;
         cout << "5. Add Video to Playlist" << endl;
         cout << "6. Remove Video from Playlist" << endl;
-        cout << "S. Stop Playlist" << endl;
         cout << "B. Back to Main Menu" << endl;
         cout << "==========================================" << endl;
         cout << "Enter your choice: ";
@@ -74,9 +73,6 @@ void VideoPlayer::PlaylistMenu() {
                 break;
             case '6':
                 removeVideoRuntime();
-                break;
-            case 'S':
-                stopPlaylist();
                 break;
             case 'B':
                 return;  // Back to the main menu
@@ -195,20 +191,20 @@ void VideoPlayer::addVideoRuntime() {
 
 void VideoPlayer::removeVideoRuntime() {
     if (currentPlaylist) {
+        cout << "Selected playlist: " << currentPlaylist->PlayListName << endl;
+        displayvideos();
         int index;
-        cout << "Enter the index of the video to remove: ";
+        cout << "Enter the Number of the video to remove: ";
         cin >> index;
-        removeVideo(index);
+        removeVideo(index-1);
     } else {
         cerr << "No playlist selected. Please select a playlist first." << endl;
     }
 }
 
-void VideoPlayer::stopPlaylist() {
+void VideoPlayer::displayvideos() {
     if (currentPlaylist) {
-        currentPlaylist->clear();
-        paused = false;
-        cout << "Playlist stopped." << endl;
+        currentPlaylist->videos.display(cout);
     } else {
         cerr << "No playlist selected. Please select a playlist first." << endl;
     }
