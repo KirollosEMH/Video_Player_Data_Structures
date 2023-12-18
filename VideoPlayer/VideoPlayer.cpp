@@ -132,27 +132,21 @@ void VideoPlayer::playPlaylist() {
                 }
                 imshow("Video Player", frame);
             }
-
             char c = (char)waitKey(1000 / static_cast<int>(fps));
-            if (c == 27) {
-                cout << "Escape key pressed. Exiting..." << endl;
-                exit(0);
+            if (c == 27 || c=='s') {
+                video.release();
+                destroyAllWindows();
+                return;
             } else if (c == ' ') {
                 paused = !paused;
-            } else if (c == 'n' || c == 83) {
+            } else if (c == 'n' || c == 77) {
                 playNextVideo();
                 break;
-            } else if (c == 'p' || c == 81) {
+            } else if (c == 'p' || c == 75) {
                 playPreviousVideo();
-                break;
-            } else if (c == 'a') {
-                addVideoRuntime();
                 break;
             } else if (c == 'r') {
                 removeVideoRuntime();
-                break;
-            } else if (c == 's') {
-                stopPlaylist();
                 break;
             }
         }
