@@ -1,10 +1,45 @@
 // VideoPlayer.cpp
 #include "VideoPlayer.h"
 #include <string>
+#include <fstream>
 
 VideoPlayer::VideoPlayer() : paused(false), currentPlaylist(nullptr) {
-    // Create a default playlist when the VideoPlayer is constructed.
-    createPlaylist();
+    readDatabase();
+}
+
+void VideoPlayer::readDatabase() {
+    std::ifstream database("../DB/Playlists.csv");
+    if (!database.is_open()) {
+        std::cerr << "Error opening Playlist.csv" << std::endl;
+        return;
+    }
+
+    std::string line;
+    while (std::getline(database, line)) {
+        Playlist newPlaylist;
+
+        // Use stringstream to parse the line
+        std::istringstream ss(line);
+        std::string token;
+
+        // First token is the playlist name
+        if (std::getline(ss, token, ',')) {
+            newPlaylist.PlayListName = token;
+        } else {
+            std::cerr << "Error parsing playlist name in line: " << line << std::endl;
+            continue;  // Skip this line and move to the next one
+        }
+
+        // Remaining tokens are video paths
+        while (std::getline(ss, token, ',')) {
+            newPlaylist.addVideo(token);
+        }
+
+        // Add the new playlist to the playlists vector
+        playlists.push_back(newPlaylist);
+    }
+
+    database.close();
 }
 
 void VideoPlayer::VideoPlayerMainMenu() {
