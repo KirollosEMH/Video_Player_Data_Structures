@@ -119,6 +119,7 @@ void CircularLinkedList<ElementType>::insert(ElementType dataVal, int index)
     }
 
     mySize++;
+    currentPtr = first;
 }
 
 template <typename ElementType>
@@ -264,13 +265,12 @@ ostream& operator<<(ostream& out, const CircularLinkedList<ElementType>& aList)
 }
 
 template<typename ElementType>
-void CircularLinkedList<ElementType>::organizeBySwap(ElementType dataVal, int pos) {
+void CircularLinkedList<ElementType>::organizeBySwap(int old_pos, int pos) {
 
     if (pos < 0 || pos >= mySize) {
         cout << "Invalid position" << endl;
         return;
     }
-    int old_pos = search(dataVal);
     if (old_pos == -1 || empty()){
         cout << "Value not found" << endl;
         return;
@@ -288,24 +288,32 @@ void CircularLinkedList<ElementType>::organizeBySwap(ElementType dataVal, int po
     // replace the data in the two positions
     current->data = new_current->data;
     new_current->data = Temp;
+    currentPtr = first;
 
 }
 
 template<typename ElementType>
-void CircularLinkedList<ElementType>::organizeByShift(ElementType dataVal, int pos){
-    if (pos < 0 || pos >= mySize) {
-        cout << "Invalid position" << endl;
+void CircularLinkedList<ElementType>::organizeByShift(int oldPos, int newPos) {
+    if (oldPos < 0 || oldPos >= mySize || newPos < 0 || newPos >= mySize || oldPos == newPos) {
+        cout << "Invalid positions" << endl;
         return;
     }
-    int old_pos = search(dataVal);
-    if (old_pos == -1 || empty()){
-        cout << "Value not found" << endl;
-        return;
+
+    // Find the node at the old position
+    NodePointer current = first;
+    for (int i = 0; i < oldPos; ++i) {
+        current = current->next;
     }
-    erase(old_pos);
-    insert(dataVal, pos);
+
+    // Remove the node from the old position
+    ElementType dataVal = current->data;
+    erase(oldPos);
+
+    // Insert the data at the new position
+    insert(dataVal, newPos);
     currentPtr = first;
 }
+
 template class CircularLinkedList<int>;
 template class CircularLinkedList<double>;
 template class CircularLinkedList<string>;
