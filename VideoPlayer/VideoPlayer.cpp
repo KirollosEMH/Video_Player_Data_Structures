@@ -41,6 +41,8 @@ void VideoPlayer::PlaylistMenu() {
         cout << "4. Play Playlist" << endl;
         cout << "5. Add Video to Playlist" << endl;
         cout << "6. Remove Video from Playlist" << endl;
+        cout << "7. Organize Video" << endl;
+        cout << "8. Display Videos" << endl;
         cout << "B. Back to Main Menu" << endl;
         cout << "==========================================" << endl;
         cout << "Enter your choice: ";
@@ -76,6 +78,12 @@ void VideoPlayer::PlaylistMenu() {
                 break;
             case 'B':
                 return;  // Back to the main menu
+            case '7':
+                organizeVideos();
+                break;
+            case '8':
+                displayvideos();
+                break;
             default:
                 cerr << "Invalid choice. Try again." << endl;
         }
@@ -99,6 +107,39 @@ void VideoPlayer::removeVideo(int index) {
 }
 
 // Assuming the necessary headers are included and namespaces are used.
+
+void VideoPlayer::organizeVideos() {
+    int choice;
+    cout << "Selected playlist: " << currentPlaylist->PlayListName << endl;
+    displayvideos();
+    cout << "Choose the method of organizing the videos: " << endl;
+    cout << "1. Shifting" << endl;
+    cout << "2. Swapping" << endl;
+    cin >> choice;
+    string videoPath;
+
+    cout << "Enter the path of the video to organize: \n";
+    cin.ignore();
+    getline(cin, videoPath);
+    int index;
+    cout << "Enter the new position of the video: \n";
+
+    cin >> index;
+
+    switch (choice) {
+        case 1:
+            cout << "Shifting Operation is applied" << endl;
+            cout << videoPath << endl;
+            currentPlaylist -> videos.organizeByShift(videoPath, index);
+            break;
+        case 2:
+            cout << "Swapping" << endl;
+            currentPlaylist -> videos.organizeBySwap(videoPath, index);
+            break;
+        default:
+            cout << "Invalid choice. Try again." << endl;
+    }
+}
 
 void VideoPlayer::playPlaylist() {
     if (currentPlaylist == nullptr){

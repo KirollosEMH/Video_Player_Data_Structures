@@ -70,6 +70,8 @@ public:
 
     void removeVideoRuntime();
 
+    void organizeVideos();
+
     void displayvideos();
 
     void displayPlaylists();
