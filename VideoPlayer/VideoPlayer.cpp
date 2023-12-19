@@ -116,11 +116,10 @@ void VideoPlayer::organizeVideos() {
     cout << "1. Shifting" << endl;
     cout << "2. Swapping" << endl;
     cin >> choice;
-    string videoPath;
+    int old_pos;
 
-    cout << "Enter the path of the video to organize: \n";
-    cin.ignore();
-    getline(cin, videoPath);
+    cout << "Enter the video to organize: \n";
+    cin >> old_pos;
     int index;
     cout << "Enter the new position of the video: \n";
 
@@ -129,12 +128,11 @@ void VideoPlayer::organizeVideos() {
     switch (choice) {
         case 1:
             cout << "Shifting Operation is applied" << endl;
-            cout << videoPath << endl;
-            currentPlaylist -> videos.organizeByShift(videoPath, index);
+            currentPlaylist -> videos.organizeByShift(old_pos-1, index-1);
             break;
         case 2:
             cout << "Swapping" << endl;
-            currentPlaylist -> videos.organizeBySwap(videoPath, index);
+            currentPlaylist -> videos.organizeBySwap(old_pos-1, index-1);
             break;
         default:
             cout << "Invalid choice. Try again." << endl;
