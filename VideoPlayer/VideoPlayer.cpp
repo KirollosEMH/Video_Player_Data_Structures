@@ -223,8 +223,8 @@ void VideoPlayer::addVideoRuntime() {
         string videoPath;
         cout << "Enter the path of the video to add: ";
         getline(cin, videoPath);
-        cout << videoPath;
-        addVideo(videoPath.substr(1, videoPath.length() - 2));
+        //cout << videoPath;
+        addVideo(videoPath);
     } else {
         cerr << "No playlist selected. Please select a playlist first." << endl;
     }
