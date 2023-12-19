@@ -136,6 +136,8 @@ public:
      * @param pos the position in the list of the element to move
     */
 
+    void displayVideoNames(ostream& out) const;
+
 };
 
 

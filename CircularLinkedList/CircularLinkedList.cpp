@@ -200,6 +200,28 @@ void CircularLinkedList<ElementType>::display(ostream& out) const
 
     out << endl;
 }
+template <>
+void CircularLinkedList<string>::displayVideoNames(ostream& out) const
+{
+    if (empty()) {
+        out << "List is empty" << endl;
+        return;
+    }
+
+    NodePointer current = first;
+    int Number = 1;
+    do
+    {
+        size_t lastBackslashPos = current->data.find_last_of("\\");
+        string videoName = (lastBackslashPos != string::npos) ? current->data.substr(lastBackslashPos + 1) : current->data;
+        out << Number << ": " << videoName << " " << endl;
+        current = current->next;
+        Number++;
+    } while (current != first);
+
+
+    out << endl;
+}
 
 template <typename ElementType>
 int CircularLinkedList<ElementType>::getSize() const

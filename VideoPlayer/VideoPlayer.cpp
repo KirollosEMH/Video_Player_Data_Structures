@@ -245,7 +245,7 @@ void VideoPlayer::removeVideoRuntime() {
 
 void VideoPlayer::displayvideos() {
     if (currentPlaylist) {
-        currentPlaylist->videos.display(cout);
+        currentPlaylist->videos.displayVideoNames(cout);
     } else {
         cerr << "No playlist selected. Please select a playlist first." << endl;
     }
