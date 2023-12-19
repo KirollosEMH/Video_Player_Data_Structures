@@ -151,6 +151,7 @@ void CircularLinkedList<ElementType>::erase(int index)
 
     delete toDelete;
     mySize--;
+    currentPtr = first;
 }
 
 template <typename ElementType>
