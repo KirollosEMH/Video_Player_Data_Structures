@@ -164,6 +164,8 @@ int CircularLinkedList<ElementType>::search(ElementType dataVal)
 
     int index = 0;
     NodePointer ptr = first;
+
+
     while (ptr ->data != dataVal && index < mySize)
     {
         ptr = ptr -> next;
@@ -279,6 +281,7 @@ void CircularLinkedList<ElementType>::organizeByShift(ElementType dataVal, int p
     }
     erase(old_pos);
     insert(dataVal, pos);
+    currentPtr = first;
 }
 template class CircularLinkedList<int>;
 template class CircularLinkedList<double>;
