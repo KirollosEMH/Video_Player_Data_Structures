@@ -72,6 +72,8 @@ public:
 
     void displayPlaylists();
 
+    void displayVideoDetails();
+
     CircularLinkedList<string> getCurrentPlaylist();
 
     vector<Playlist> getPlaylists();

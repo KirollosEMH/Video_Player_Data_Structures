@@ -314,6 +314,21 @@ void CircularLinkedList<ElementType>::organizeByShift(int oldPos, int newPos) {
     currentPtr = first;
 }
 
+template<typename ElementType>
+ElementType CircularLinkedList<ElementType>::getIndexValue(int index) const {
+    if (index < 0 || index >= mySize) {
+        cout << "Invalid index" << endl;
+        return ElementType();
+    }
+
+    NodePointer iterator = first;
+    for (int i = 0; i < index; ++i) {
+        iterator = iterator->next;
+    }
+
+    return iterator->data;
+}
+
 template class CircularLinkedList<int>;
 template class CircularLinkedList<double>;
 template class CircularLinkedList<string>;

@@ -43,6 +43,7 @@ void VideoPlayer::PlaylistMenu() {
         cout << "6. Remove Video from Playlist" << endl;
         cout << "7. Organize Video" << endl;
         cout << "8. Display Videos" << endl;
+        cout << "9. Display Video Details" << endl;
         cout << "B. Back to Main Menu" << endl;
         cout << "==========================================" << endl;
         cout << "Enter your choice: ";
@@ -83,6 +84,9 @@ void VideoPlayer::PlaylistMenu() {
                 break;
             case '8':
                 displayvideos();
+                break;
+            case '9':
+                displayVideoDetails();
                 break;
             default:
                 cerr << "Invalid choice. Try again." << endl;
@@ -241,13 +245,6 @@ void VideoPlayer::removeVideoRuntime() {
     }
 }
 
-void VideoPlayer::displayvideos() {
-    if (currentPlaylist) {
-        currentPlaylist->videos.displayVideoNames(cout);
-    } else {
-        cerr << "No playlist selected. Please select a playlist first." << endl;
-    }
-}
 
 CircularLinkedList<string> VideoPlayer::getCurrentPlaylist() {
     if (currentPlaylist) {
@@ -297,5 +294,47 @@ void VideoPlayer::displayPlaylists() {
     cout << "Available Playlists:" << endl;
     for (size_t i = 0; i < playlists.size(); ++i) {
         cout << i + 1 << ". " << playlists[i].PlayListName << endl;
+    }
+}
+
+void VideoPlayer::displayvideos() {
+    if (currentPlaylist) {
+        currentPlaylist->videos.displayVideoNames(cout);
+    } else {
+        cerr << "No playlist selected. Please select a playlist first." << endl;
+    }
+}
+
+void VideoPlayer::displayVideoDetails() {
+    if (currentPlaylist) {
+        displayvideos();
+        int index;
+        cout << "Enter the index of the video to display details: ";
+        cin >> index;
+        string videoPath = currentPlaylist->videos.getIndexValue(index - 1);
+
+
+        VideoCapture video(videoPath);
+
+        if (!video.isOpened()) {
+            cerr << "Error opening video file: " << videoPath << endl;
+            return;
+        }
+
+        double fps = video.get(CAP_PROP_FPS);
+        int frameCount = int(video.get(CAP_PROP_FRAME_COUNT));
+        int width = int(video.get(CAP_PROP_FRAME_WIDTH));
+        int height = int(video.get(CAP_PROP_FRAME_HEIGHT));
+        double duration = frameCount / fps;
+
+        cout << "Video: " << videoPath << endl;
+        cout << "Duration: " << duration << " seconds" << endl;
+        cout << "Frame Count: " << frameCount << endl;
+        cout << "Width: " << width << " px, Height: " << height << " px" << endl;
+        cout << "Frame Rate: " << fps << " FPS" << endl;
+
+        video.release();
+    } else {
+        cerr << "No playlist selected. Please select a playlist first." << endl;
     }
 }

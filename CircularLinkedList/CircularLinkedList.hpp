@@ -138,6 +138,13 @@ public:
 
     void displayVideoNames(ostream& out) const;
 
+    /*
+     * Outputs to the stream out all of the data values stored in the list, each value separated by a space.
+     * @param out the ostream object to output to
+    */
+
+    ElementType getIndexValue(int index) const;
+
 };
 
 
