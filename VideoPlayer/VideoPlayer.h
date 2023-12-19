@@ -1,7 +1,3 @@
-#ifndef TESTPROJECT_VIDEOPLAYER_H
-#define TESTPROJECT_VIDEOPLAYER_H
-
-// VideoPlayer.h
 #ifndef VIDEOPLAYER_H
 #define VIDEOPLAYER_H
 
@@ -82,5 +78,3 @@ public:
 };
 
 #endif // VIDEOPLAYER_H
-
-#endif //TESTPROJECT_VIDEOPLAYER_H

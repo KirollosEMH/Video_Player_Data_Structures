@@ -1,5 +1,5 @@
-#ifndef VIDEO_PLAYER_DATA_STRUCTURES_CIRCULAR_LINKED_LIST_H
-#define VIDEO_PLAYER_DATA_STRUCTURES_CIRCULAR_LINKED_LIST_H
+#ifndef CIRCULAR_LINKED_LIST_H
+#define CIRCULAR_LINKED_LIST_H
 
 #include <iostream>
 using namespace std;
@@ -145,4 +145,4 @@ public:
 template <typename ElementType>
 ostream& operator<<(ostream& out, const CircularLinkedList<ElementType>& aList);
 
-#endif // VIDEO_PLAYER_DATA_STRUCTURES_CIRCULAR_LINKED_LIST
+#endif // CIRCULAR_LINKED_LIST
