@@ -42,6 +42,8 @@ private:
 public:
     VideoPlayer();
 
+    void readDatabase();
+
     void VideoPlayerMainMenu();
 
     void PlaylistMenu();
