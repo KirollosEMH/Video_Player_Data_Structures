@@ -120,7 +120,7 @@ public:
      * Removes all elements from the list.
     */
 
-    void organizeBySwap(ElementType dataVal, int pos);
+    void organizeBySwap(int old_pos, int pos);
 
     /*
      * Organizes the list by swapping the element at the position given by the zero-based pos value with the element containing dataVal.
@@ -128,7 +128,7 @@ public:
      * @param pos the position in the list of the element to move
     */
 
-    void organizeByShift(ElementType dataVal, int pos);
+    void organizeByShift(int old_pos, int pos);
 
     /*
      * Organizes the list by shifting the element at the position given by the zero-based pos value to the position immediately after the element containing dataVal.
