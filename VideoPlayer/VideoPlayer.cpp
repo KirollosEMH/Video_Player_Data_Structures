@@ -42,6 +42,24 @@ void VideoPlayer::readDatabase() {
     database.close();
 }
 
+void VideoPlayer::writeDatabase(){
+    ofstream database("../DB/Playlists.csv");
+    if (!database.is_open()) {
+        cerr << "Error opening Playlist.csv" << endl;
+        return;
+    }
+
+    for (size_t i = 0; i < playlists.size(); ++i) {
+        database << playlists[i].PlayListName;
+        for (size_t j = 0; j < playlists[i].videos.getSize(); ++j) {
+            database << "," << playlists[i].videos.getIndexValue(j);
+        }
+        database << endl;
+    }
+
+    database.close();
+}
+
 void VideoPlayer::VideoPlayerMainMenu() {
     char choice;
     while (true) {
