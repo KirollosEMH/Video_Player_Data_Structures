@@ -42,6 +42,24 @@ void VideoPlayer::readDatabase() {
     database.close();
 }
 
+void VideoPlayer::writeDatabase() {
+    ofstream database("../DB/Playlists.csv");
+    if (!database.is_open()) {
+        cerr << "Error opening Playlist.csv" << std::endl;
+        return;
+    }
+
+    for (const Playlist& playlist : playlists) {
+        database << playlist.PlayListName;
+        for (int i = 0; i < playlist.videos.getSize(); ++i) {
+            database << "," << playlist.videos.getIndexValue(i);
+        }
+        database << std::endl;
+    }
+
+    database.close();
+}
+
 void VideoPlayer::VideoPlayerMainMenu() {
     char choice;
     while (true) {
@@ -58,6 +76,7 @@ void VideoPlayer::VideoPlayerMainMenu() {
                 PlaylistMenu();
                 break;
             case '2':
+                writeDatabase();
                 cout << "Exiting program." << endl;
                 return;
             default:
