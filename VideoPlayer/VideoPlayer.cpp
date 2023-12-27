@@ -42,6 +42,35 @@ void VideoPlayer::readDatabase() {
     database.close();
 }
 
+void VideoPlayer::writeDatabase() {
+    std::ofstream database("../DB/Playlists.csv"); 
+    if (!database.is_open()) {
+        std::cerr << "Error opening Playlists.csv for writing" << std::endl;
+        return;
+    }
+
+    auto begin = playlists.begin();
+
+    while (begin != playlists.end()) {
+        const Playlist &playlist = *begin;  
+
+        // Write the playlist name
+        database << playlist.PlayListName;
+
+        // Write each video path in the playlist
+        playlist.videos.traverse([&](const std::string &videoPath) { 
+            database << "," << videoPath;  
+        });
+
+        // End of this playlist's line
+        database << std::endl;
+
+        ++begin;
+    }
+
+    database.close();  
+}
+
 void VideoPlayer::VideoPlayerMainMenu() {
     char choice;
     while (true) {

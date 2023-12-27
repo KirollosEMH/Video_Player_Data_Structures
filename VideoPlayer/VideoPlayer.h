@@ -44,6 +44,8 @@ public:
 
     void readDatabase();
 
+    void writeDatabase();
+
     void VideoPlayerMainMenu();
 
     void PlaylistMenu();
