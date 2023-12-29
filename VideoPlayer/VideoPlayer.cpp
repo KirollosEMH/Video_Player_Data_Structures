@@ -2,6 +2,9 @@
 #include "VideoPlayer.h"
 #include <string>
 #include <fstream>
+#define CVUI_IMPLEMENTATION
+#include "../cvui.h"
+
 
 VideoPlayer::VideoPlayer() : paused(false), currentPlaylist(nullptr) {
     readDatabase();
@@ -60,91 +63,89 @@ void VideoPlayer::writeDatabase() {
     database.close();
 }
 
+
 void VideoPlayer::VideoPlayerMainMenu() {
     char choice;
+    cvui::init("Video Player Menu");
+
+    cv::Mat frame = cv::Mat(500, 1000, CV_8UC3);
+
+    int x = 250;
+    int y = 25;
+
     while (true) {
-        cout << "========== Video Player Main Menu ==========" << endl;
-        cout << "1. Playlist Menu" << endl;
-        cout << "2. Quit Program" << endl;
-        cout << "============================================" << endl;
-        cout << "Enter your choice: ";
-        cin >> choice;
-        cin.ignore();  // Consume newline character
+        // Clear the frame
+        frame = cv::Scalar(200, 200, 200);
 
-        switch (choice) {
-            case '1':
-                PlaylistMenu();
-                break;
-            case '2':
-                writeDatabase();
-                cout << "Exiting program." << endl;
-                return;
-            default:
-                cerr << "Invalid choice. Try again." << endl;
+        cvui::text(frame, 280, 25, "Video Player Menu", 1.5, 0x000000);
+
+        int buttonHeight = 40;  // Initial height of the button
+        int buttonWidth = 500;  // Initial width of the button
+        int buttonColor = 0x888888;  // Color for the buttons
+        float fontSize = 0.5;  // Font size for the buttons
+
+
+
+        // First button with different font size and color
+        if (cvui::button(frame, x, y + buttonHeight * 1,buttonWidth,buttonHeight, "Create Playlist", fontSize, buttonColor)) {
+            createPlaylist();
         }
-    }
-}
 
-void VideoPlayer::PlaylistMenu() {
-    char choice;
-    while (true) {
-        cout << "============= Playlist Menu ==============" << endl;
-        cout << "1. Create Playlist" << endl;
-        cout << "2. Delete Playlist" << endl;
-        cout << "3. Select Playlist" << endl;
-        cout << "4. Play Playlist" << endl;
-        cout << "5. Add Video to Playlist" << endl;
-        cout << "6. Remove Video from Playlist" << endl;
-        cout << "7. Organize Video" << endl;
-        cout << "8. Display Videos" << endl;
-        cout << "9. Display Video Details" << endl;
-        cout << "B. Back to Main Menu" << endl;
-        cout << "==========================================" << endl;
-        cout << "Enter your choice: ";
-        cin >> choice;
-        cin.ignore();  // Consume newline character
-
-        switch (toupper(choice)) {
-            case '1':
-                createPlaylist();
-                break;
-            case '2':
-                displayPlaylists();
-                cout << "Enter the index of the playlist to delete: ";
-                int deleteIndex;
-                cin >> deleteIndex;
-                deletePlaylist(deleteIndex - 1);  // Adjust for 1-based index
-                break;
-            case '3':
-                displayPlaylists();
-                cout << "Enter the index of the playlist to select: ";
-                int selectIndex;
-                cin >> selectIndex;
-                selectPlaylist(selectIndex - 1);  // Adjust for 1-based index
-                break;
-            case '4':
-                playPlaylist();
-                break;
-            case '5':
-                addVideoRuntime();
-                break;
-            case '6':
-                removeVideoRuntime();
-                break;
-            case 'B':
-                return;  // Back to the main menu
-            case '7':
-                organizeVideos();
-                break;
-            case '8':
-                displayvideos();
-                break;
-            case '9':
-                displayVideoDetails();
-                break;
-            default:
-                cerr << "Invalid choice. Try again." << endl;
+        // Remaining buttons with the same style
+        if (cvui::button(frame, x, y + buttonHeight * 2,buttonWidth,buttonHeight,  "Delete Selected Playlist", fontSize, buttonColor)) {
+            displayPlaylists();
+            std::cout << "Enter the index of the playlist to delete: ";
+            int deleteIndex;
+            std::cin >> deleteIndex;
+            deletePlaylist(deleteIndex - 1);  // Adjust for 1-based index
         }
+
+        if (cvui::button(frame, x, y + buttonHeight * 3,buttonWidth,buttonHeight,  "Select Playlists", fontSize, buttonColor)) {
+            displayPlaylists();
+            std::cout << "Enter the index of the playlist to select: ";
+            int selectIndex;
+            std::cin >> selectIndex;
+            selectPlaylist(selectIndex - 1);  // Adjust for 1-based index
+        }
+
+        if (cvui::button(frame, x, y + buttonHeight * 4,buttonWidth,buttonHeight,  "Play Selected Playlist", fontSize, buttonColor)) {
+            playPlaylist();
+        }
+
+        if (cvui::button(frame, x, y + buttonHeight * 5,buttonWidth,buttonHeight,  "Add Video to Playlist", fontSize, buttonColor)) {
+            addVideoRuntime();
+        }
+
+        if (cvui::button(frame, x, y + buttonHeight * 6,buttonWidth,buttonHeight,  "Remove Video from Playlist", fontSize, buttonColor)) {
+            removeVideoRuntime();
+        }
+
+        if (cvui::button(frame, x, y + buttonHeight * 7,buttonWidth,buttonHeight,  "Organize Videos", fontSize, buttonColor)) {
+            organizeVideos();
+        }
+
+        if (cvui::button(frame, x, y + buttonHeight * 8,buttonWidth,buttonHeight,  "Display Videos", fontSize, buttonColor)) {
+            displayvideos();
+        }
+
+        if (cvui::button(frame, x, y + buttonHeight * 9,buttonWidth,buttonHeight,  "Display Video Details", fontSize, buttonColor)) {
+            displayVideoDetails();
+        }
+
+        if (cvui::button(frame, x, y + buttonHeight * 10,buttonWidth,buttonHeight,  "Quit", fontSize, buttonColor)) {
+            writeDatabase();
+            std::cout << "Exiting program." << std::endl;
+            return;
+        }
+
+        // Update the cvui components
+        cvui::update();
+
+        // Show the frame
+        cv::imshow("Video Player Menu", frame);
+
+        // Check for keypress
+        choice = cv::waitKey(20);
     }
 }
 
@@ -232,7 +233,7 @@ void VideoPlayer::playPlaylist() {
             char c = (char)waitKey(1000 / static_cast<int>(fps));
             if (c == 27 || c=='s') {
                 video.release();
-                destroyAllWindows();
+                destroyWindow("Video Player");
                 return;
             } else if (c == ' ') {
                 paused = !paused;
