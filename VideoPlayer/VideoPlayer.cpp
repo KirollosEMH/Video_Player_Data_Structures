@@ -92,7 +92,7 @@ void VideoPlayer::VideoPlayerMainMenu() {
         }
 
         // Remaining buttons with the same style
-        if (cvui::button(frame, x, y + buttonHeight * 2,buttonWidth,buttonHeight,  "Delete Selected Playlist")) {
+        if (cvui::button(frame, x, y + buttonHeight * 2,buttonWidth,buttonHeight,  "Delete Playlist")) {
 
             displayPlaylists();
             std::cout << "Enter the index of the playlist to delete: ";
