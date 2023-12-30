@@ -87,12 +87,13 @@ void VideoPlayer::VideoPlayerMainMenu() {
 
 
         // First button with different font size and color
-        if (cvui::button(frame, x, y + buttonHeight * 1,buttonWidth,buttonHeight, "Create Playlist", fontSize, buttonColor)) {
+        if (cvui::button(frame, x, y + buttonHeight * 1,buttonWidth,buttonHeight, "Create Playlist")) {
             createPlaylist();
         }
 
         // Remaining buttons with the same style
-        if (cvui::button(frame, x, y + buttonHeight * 2,buttonWidth,buttonHeight,  "Delete Selected Playlist", fontSize, buttonColor)) {
+        if (cvui::button(frame, x, y + buttonHeight * 2,buttonWidth,buttonHeight,  "Delete Selected Playlist")) {
+
             displayPlaylists();
             std::cout << "Enter the index of the playlist to delete: ";
             int deleteIndex;
@@ -100,39 +101,69 @@ void VideoPlayer::VideoPlayerMainMenu() {
             deletePlaylist(deleteIndex - 1);  // Adjust for 1-based index
         }
 
-        if (cvui::button(frame, x, y + buttonHeight * 3,buttonWidth,buttonHeight,  "Select Playlists", fontSize, buttonColor)) {
-            displayPlaylists();
-            std::cout << "Enter the index of the playlist to select: ";
-            int selectIndex;
-            std::cin >> selectIndex;
-            selectPlaylist(selectIndex - 1);  // Adjust for 1-based index
+        if (cvui::button(frame, x, y + buttonHeight * 3,buttonWidth,buttonHeight,  "Select Playlists")) {
+            int selectIndex = 1;
+            string selectPlaylistStr;
+            while (true) {
+                // Clear the frame
+                frame = cv::Scalar(200, 200, 200);
+
+                cvui::text(frame, 350, 25, "Select Playlist", 1.5, 0x000000);
+
+                for (size_t i = 0; i < playlists.size(); ++i) {
+                    string text = to_string(i + 1) + ". " + playlists[i].PlayListName;
+                    cvui::text(frame, 50, 100 + 25 * i, text , 0.5, 0x000000);
+                }
+
+                cvui::input(frame, 50, 100 + 25 * playlists.size(), 200, "Video Number", selectPlaylistStr);
+
+                if (cvui::button(frame, 50, 100 + 25 * playlists.size() + 50, 200, 50, "Select Playlist")) {
+                    break;
+                }
+                // Update the cvui components
+                cvui::update();
+
+                // Show the frame
+                cv::imshow("Video Player Menu", frame);
+
+                // Check for keypress
+                choice = cv::waitKey(20);
+            }
+            try {
+                selectIndex = stoi(selectPlaylistStr);
+                selectPlaylist(selectIndex - 1);
+            } catch (std::invalid_argument& e) {
+                std::cerr << "Invalid input for playlist selection." << std::endl;
+            }
+
+
         }
 
-        if (cvui::button(frame, x, y + buttonHeight * 4,buttonWidth,buttonHeight,  "Play Selected Playlist", fontSize, buttonColor)) {
+        if (cvui::button(frame, x, y + buttonHeight * 4,buttonWidth,buttonHeight,  "Play Selected Playlist")) {
             playPlaylist();
         }
 
-        if (cvui::button(frame, x, y + buttonHeight * 5,buttonWidth,buttonHeight,  "Add Video to Playlist", fontSize, buttonColor)) {
+        if (cvui::button(frame, x, y + buttonHeight * 5,buttonWidth,buttonHeight,  "Add Video to Playlist")) {
             addVideoRuntime();
         }
 
-        if (cvui::button(frame, x, y + buttonHeight * 6,buttonWidth,buttonHeight,  "Remove Video from Playlist", fontSize, buttonColor)) {
+        if (cvui::button(frame, x, y + buttonHeight * 6,buttonWidth,buttonHeight,  "Remove Video from Playlist")) {
             removeVideoRuntime();
         }
 
-        if (cvui::button(frame, x, y + buttonHeight * 7,buttonWidth,buttonHeight,  "Organize Videos", fontSize, buttonColor)) {
+        if (cvui::button(frame, x, y + buttonHeight * 7,buttonWidth,buttonHeight,  "Organize Videos")) {
             organizeVideos();
         }
 
-        if (cvui::button(frame, x, y + buttonHeight * 8,buttonWidth,buttonHeight,  "Display Videos", fontSize, buttonColor)) {
+        if (cvui::button(frame, x, y + buttonHeight * 8,buttonWidth,buttonHeight,  "Display Videos")) {
             displayvideos();
         }
 
-        if (cvui::button(frame, x, y + buttonHeight * 9,buttonWidth,buttonHeight,  "Display Video Details", fontSize, buttonColor)) {
+        if (cvui::button(frame, x, y + buttonHeight * 9,buttonWidth,buttonHeight,  "Display Video Details")) {
             displayVideoDetails();
         }
 
-        if (cvui::button(frame, x, y + buttonHeight * 10,buttonWidth,buttonHeight,  "Quit", fontSize, buttonColor)) {
+        if (cvui::button(frame, x, y + buttonHeight * 10,buttonWidth,buttonHeight,  "Quit")) {
             writeDatabase();
             std::cout << "Exiting program." << std::endl;
             return;
@@ -213,6 +244,7 @@ void VideoPlayer::playPlaylist() {
     while (!currentPlaylist->videos.empty()) {
         string videoPath = currentPlaylist->videos.getCurrentData();
         VideoCapture video(videoPath);
+
         if (!video.isOpened()) {
             cerr << "Error opening video file." << endl;
             return;

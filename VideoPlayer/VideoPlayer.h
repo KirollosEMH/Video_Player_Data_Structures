@@ -48,8 +48,6 @@ public:
 
     void VideoPlayerMainMenu();
 
-    void PlaylistMenu();
-
     void createPlaylist();
 
     void deletePlaylist(int index);
