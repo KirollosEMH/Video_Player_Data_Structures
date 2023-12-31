@@ -129,58 +129,11 @@ void VideoPlayer::VideoPlayerMainMenu() {
         }
 
         if (cvui::button(frame, x, y + buttonHeight * 5,buttonWidth,buttonHeight,  "Add Video to Playlist")) {
-            if (currentPlaylist){
-                addVideoRuntime();
-            }
-            else{
-                while (true) {
-                    // Clear the frame
-                    frame = cv::Scalar(200, 200, 200);
-
-                    cvui::text(frame, 350, 25, "Videos Available", 1.5, 0x000000);
-
-                    cvui::text(frame, 50, 100, "No playlist selected! press q", 0.8, 0x000000);
-                    // Update the cvui components
-                    cvui::update();
-
-                    // Show the frame
-                    cv::imshow("Video Player Menu", frame);
-
-                    // Check for keypress
-                    choice = cv::waitKey(20);
-                    if (choice == 'q') {
-                        break;
-                    }
-                }
-            }
+            addVideoRuntime();
         }
 
         if (cvui::button(frame, x, y + buttonHeight * 6,buttonWidth,buttonHeight,  "Remove Video from Playlist")) {
-            if(currentPlaylist){
-                removeVideoRuntime();
-            }
-            else{
-                while (true) {
-                    // Clear the frame
-                    frame = cv::Scalar(200, 200, 200);
-
-                    cvui::text(frame, 350, 25, "Videos Available", 1.5, 0x000000);
-
-                    cvui::text(frame, 50, 100, "No playlist selected! press q", 0.8, 0x000000);
-                    // Update the cvui components
-                    cvui::update();
-
-                    // Show the frame
-                    cv::imshow("Video Player Menu", frame);
-
-                    // Check for keypress
-                    choice = cv::waitKey(20);
-                    if (choice == 'q') {
-                        break;
-                    }
-                }
-            }
-
+            removeVideoRuntime();
         }
 
         if (cvui::button(frame, x, y + buttonHeight * 7,buttonWidth,buttonHeight,  "Organize Videos")) {
@@ -188,59 +141,12 @@ void VideoPlayer::VideoPlayerMainMenu() {
         }
 
         if (cvui::button(frame, x, y + buttonHeight * 8,buttonWidth,buttonHeight,  "Display Videos")) {
-            if (currentPlaylist) {
-                displayvideos();
-            } else {
-                while (true) {
-                    // Clear the frame
-                    frame = cv::Scalar(200, 200, 200);
-
-                    cvui::text(frame, 350, 25, "Videos Available", 1.5, 0x000000);
-
-                    cvui::text(frame, 50, 100, "No playlist selected! press q", 0.8, 0x000000);
-                    // Update the cvui components
-                    cvui::update();
-
-                    // Show the frame
-                    cv::imshow("Video Player Menu", frame);
-
-                    // Check for keypress
-                    choice = cv::waitKey(20);
-                    if (choice == 'q') {
-                        break;
-                    }
-                }
-            }
-
-
-
+            displayvideos();
         }
 
         
         if (cvui::button(frame, x, y + buttonHeight * 9,buttonWidth,buttonHeight,  "Display Video Details")) {
-            if (currentPlaylist) {
-                displayVideoDetails();
-            } else {
-                while (true) {
-                    // Clear the frame
-                    frame = cv::Scalar(200, 200, 200);
-
-                    cvui::text(frame, 350, 25, "Videos Available", 1.5, 0x000000);
-
-                    cvui::text(frame, 50, 100, "No playlist selected! press q", 0.8, 0x000000);
-                    // Update the cvui components
-                    cvui::update();
-
-                    // Show the frame
-                    cv::imshow("Video Player Menu", frame);
-
-                    // Check for keypress
-                    choice = cv::waitKey(20);
-                    if (choice == 'q') {
-                        break;
-                    }
-                }
-            }
+            displayVideoDetails();
         }
 
         if (cvui::button(frame, x, y + buttonHeight * 10,buttonWidth,buttonHeight,  "Quit")) {
@@ -566,65 +472,111 @@ void VideoPlayer::addVideoRuntime() {
         }
         NFD_Quit();
     } else {
-        std::cerr << "No playlist selected. Please select a playlist first." << std::endl;
+        char choice;
+        cv::Mat frame = cv::Mat(500, 1000, CV_8UC3);
+        while (true) {
+            // Clear the frame
+            frame = cv::Scalar(200, 200, 200);
+
+            cvui::text(frame, 350, 25, "Videos Available", 1.5, 0x000000);
+
+            cvui::text(frame, 50, 100, "No playlist selected! press q", 0.8, 0x000000);
+            // Update the cvui components
+            cvui::update();
+
+            // Show the frame
+            cv::imshow("Video Player Menu", frame);
+
+            // Check for keypress
+            choice = cv::waitKey(20);
+            if (choice == 'q') {
+                break;
+            }
+        }
     }
 }
 
 void VideoPlayer::removeVideoRuntime() {
-    cv::Mat frame = cv::Mat(500, 1000, CV_8UC3);
-    int videoIndex = 0;
-    std::string indexStr;
+    if (currentPlaylist){
+        cv::Mat frame = cv::Mat(500, 1000, CV_8UC3);
+        int videoIndex = 0;
+        std::string indexStr;
 
-    while (true) {
-        frame = cv::Scalar(200, 200, 200);
+        while (true) {
+            frame = cv::Scalar(200, 200, 200);
 
-        cvui::text(frame, 50, 50, "Remove Video from Playlist", 1.5, 0x000000);
+            cvui::text(frame, 50, 50, "Remove Video from Playlist", 1.5, 0x000000);
 
-        if (currentPlaylist) {
-            // Display playlist name
-            cvui::text(frame, 50, 80, "Playlist: " + currentPlaylist->PlayListName, 1.0, 0x000000);
+            if (currentPlaylist) {
+                // Display playlist name
+                cvui::text(frame, 50, 80, "Playlist: " + currentPlaylist->PlayListName, 1.0, 0x000000);
 
-            // Display indices and names of videos in the playlist
-            for (size_t i = 0; i < currentPlaylist->videos.getSize(); ++i) {
-                std::string text = std::to_string(i + 1) + ". " + currentPlaylist->videos.getIndexValue(i);
-                text = text.substr(text.find_last_of('/') + 1);
-                cvui::text(frame, 50, 110 + i * 30, text, 0.8, 0x000000);
+                // Display indices and names of videos in the playlist
+                for (size_t i = 0; i < currentPlaylist->videos.getSize(); ++i) {
+                    std::string text = std::to_string(i + 1) + ". " + currentPlaylist->videos.getIndexValue(i);
+                    text = text.substr(text.find_last_of('/') + 1);
+                    cvui::text(frame, 50, 110 + i * 30, text, 0.8, 0x000000);
+                }
+
+                // Input field for the video index to remove
+                cvui::input(frame, 250, 350, 200, "Video Index", indexStr);
+                if (!indexStr.empty()) {
+                    try {
+                        videoIndex = std::stoi(indexStr);
+
+                    } catch (const std::invalid_argument& e) {
+                        std::cerr << "Invalid input for video index: " << e.what() << std::endl;
+                    }
+                }
+            } else {
+                cvui::text(frame, 50, 100, "No playlist selected! press q", 0.8, 0x000000);
             }
 
-            // Input field for the video index to remove
-            cvui::input(frame, 250, 350, 200, "Video Index", indexStr);
-            if (!indexStr.empty()) {
-                try {
-                    videoIndex = std::stoi(indexStr);
+            if (cvui::button(frame, 250, 400, "Remove Video")) {
+                if (currentPlaylist) {
+                    removeVideo(videoIndex - 1); // Adjust for 1-based index
 
-                } catch (const std::invalid_argument& e) {
-                    std::cerr << "Invalid input for video index: " << e.what() << std::endl;
+                } else {
+                    std::cerr << "No playlist selected. Please select a playlist first." << std::endl;
                 }
             }
-        } else {
-            cvui::text(frame, 50, 100, "No playlist selected! press q", 0.8, 0x000000);
-        }
 
-        if (cvui::button(frame, 250, 400, "Remove Video")) {
-            if (currentPlaylist) {
-                removeVideo(videoIndex - 1); // Adjust for 1-based index
 
-            } else {
-                std::cerr << "No playlist selected. Please select a playlist first." << std::endl;
+
+            // Update cvui and display frame
+            cvui::update();
+            cv::imshow("Video Player Menu", frame);
+
+            char choice = cv::waitKey(20);
+            if (choice == 'q') {
+                break;
             }
         }
+    }
+    else {
+        char choice;
+        cv::Mat frame = cv::Mat(500, 1000, CV_8UC3);
+        while (true) {
+            // Clear the frame
+            frame = cv::Scalar(200, 200, 200);
 
+            cvui::text(frame, 350, 25, "Videos Available", 1.5, 0x000000);
 
+            cvui::text(frame, 50, 100, "No playlist selected! press q", 0.8, 0x000000);
+            // Update the cvui components
+            cvui::update();
 
-        // Update cvui and display frame
-        cvui::update();
-        cv::imshow("Video Player Menu", frame);
+            // Show the frame
+            cv::imshow("Video Player Menu", frame);
 
-        char choice = cv::waitKey(20);
-        if (choice == 'q') {
-            break;
+            // Check for keypress
+            choice = cv::waitKey(20);
+            if (choice == 'q') {
+                break;
+            }
         }
     }
+
 }
 
 
@@ -822,7 +774,27 @@ void VideoPlayer::displayvideos() {
             }
         }
     } else {
-        cerr << "No playlist selected. Please select a playlist first." << endl;
+        char choice;
+        cv::Mat frame = cv::Mat(500, 1000, CV_8UC3);
+        while (true) {
+            // Clear the frame
+            frame = cv::Scalar(200, 200, 200);
+
+            cvui::text(frame, 350, 25, "Videos Available", 1.5, 0x000000);
+
+            cvui::text(frame, 50, 100, "No playlist selected! press q", 0.8, 0x000000);
+            // Update the cvui components
+            cvui::update();
+
+            // Show the frame
+            cv::imshow("Video Player Menu", frame);
+
+            // Check for keypress
+            choice = cv::waitKey(20);
+            if (choice == 'q') {
+                break;
+            }
+        }
     }
 }
 
@@ -939,6 +911,26 @@ void VideoPlayer::displayVideoDetails() {
 
 
     } else {
-        cerr << "No playlist selected. Please select a playlist first." << endl;
+        char choice;
+        cv::Mat frame = cv::Mat(500, 1000, CV_8UC3);
+        while (true) {
+            // Clear the frame
+            frame = cv::Scalar(200, 200, 200);
+
+            cvui::text(frame, 350, 25, "Videos Available", 1.5, 0x000000);
+
+            cvui::text(frame, 50, 100, "No playlist selected! press q", 0.8, 0x000000);
+            // Update the cvui components
+            cvui::update();
+
+            // Show the frame
+            cv::imshow("Video Player Menu", frame);
+
+            // Check for keypress
+            choice = cv::waitKey(20);
+            if (choice == 'q') {
+                break;
+            }
+        }
     }
 }
