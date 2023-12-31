@@ -195,9 +195,10 @@ void VideoPlayer::organizeVideosRuntime() {
             cvui::text(frame, 350, 25, "Organize Videos", 1.5, 0x000000);
             cvui::text(frame, 300, 100, currentPlaylist ->PlayListName, 0.5, 0x000000);
             for (int i = 0; i < currentPlaylist->videos.getSize(); ++i) {
-                string text = currentPlaylist->videos.getIndexValue(i);
-                // format text to print only the video name
-                text = to_string(i + 1) + ". " + text.substr(text.find_last_of('/') + 1);
+                string text =  currentPlaylist->videos.getIndexValue(i);
+                text= text.substr(text.find_last_of(  '/') + 1);
+                text = text.substr(text.find_last_of(  '\\') + 1);
+                text = to_string(i + 1) + ". " + text;
                 cvui::text(frame, 300, 100 + 25 * (i+1), text , 0.5, 0x000000);
             }
 
@@ -300,9 +301,10 @@ void VideoPlayer::organizeVideosRuntime() {
             cvui::text(frame, 350, 25, "After Organizations", 1.5, 0x000000);
             cvui::text(frame, 300, 100, currentPlaylist ->PlayListName, 0.5, 0x000000);
             for (int i = 0; i < currentPlaylist->videos.getSize(); ++i) {
-                string text = currentPlaylist->videos.getIndexValue(i);
-                // format text to print only the video name
-                text = to_string(i + 1) + ". " + text.substr(text.find_last_of('/') + 1);
+                string text =  currentPlaylist->videos.getIndexValue(i);
+                text= text.substr(text.find_last_of(  '/') + 1);
+                text = text.substr(text.find_last_of(  '\\') + 1);
+                text = to_string(i + 1) + ". " + text;
                 cvui::text(frame, 300, 100 + 25 * (i+1), text , 0.5, 0x000000);
             }
             if (cvui::button(frame, 250, 200, 200, 50, "Mainmenu")) {
@@ -509,17 +511,19 @@ void VideoPlayer::removeVideoRuntime() {
 
             if (currentPlaylist) {
                 // Display playlist name
-                cvui::text(frame, 50, 80, "Playlist: " + currentPlaylist->PlayListName, 1.0, 0x000000);
+                cvui::text(frame, 50, 100, "Playlist: " + currentPlaylist->PlayListName, 1.0, 0x000000);
 
                 // Display indices and names of videos in the playlist
                 for (size_t i = 0; i < currentPlaylist->videos.getSize(); ++i) {
-                    std::string text = std::to_string(i + 1) + ". " + currentPlaylist->videos.getIndexValue(i);
-                    text = text.substr(text.find_last_of('/') + 1);
-                    cvui::text(frame, 50, 110 + i * 30, text, 0.8, 0x000000);
+                    string text =  currentPlaylist->videos.getIndexValue(i);
+                    text= text.substr(text.find_last_of(  '/') + 1);
+                    text = text.substr(text.find_last_of(  '\\') + 1);
+                    text = to_string(i + 1) + ". " + text;
+                    cvui::text(frame, 50, 150 + i * 30, text, 0.8, 0x000000);
                 }
 
                 // Input field for the video index to remove
-                cvui::input(frame, 250, 350, 200, "Video Index", indexStr);
+                cvui::input(frame, 600, 150, 200, "Video Index", indexStr);
                 if (!indexStr.empty()) {
                     try {
                         videoIndex = std::stoi(indexStr);
@@ -532,13 +536,17 @@ void VideoPlayer::removeVideoRuntime() {
                 cvui::text(frame, 50, 100, "No playlist selected! press q", 0.8, 0x000000);
             }
 
-            if (cvui::button(frame, 250, 400, "Remove Video")) {
+            if (cvui::button(frame, 600, 200,200,50, "Remove Video")) {
                 if (currentPlaylist) {
                     removeVideo(videoIndex - 1); // Adjust for 1-based index
 
                 } else {
                     std::cerr << "No playlist selected. Please select a playlist first." << std::endl;
                 }
+            }
+
+            if (cvui::button(frame, 600, 300,200,50, "Back")) {
+                break;
             }
 
 
@@ -753,8 +761,9 @@ void VideoPlayer::displayvideos() {
 
             for (int i = 0; i < currentPlaylist->videos.getSize(); ++i) {
                 string text =  currentPlaylist->videos.getIndexValue(i);
-                text= to_string(i + 1) + ". " + text.substr(text.find_last_of(  '/') + 1);
-                text = text.substr(text.find_last_of(  '\'') + 1);
+                text= text.substr(text.find_last_of(  '/') + 1);
+                text = text.substr(text.find_last_of(  '\\') + 1);
+                text = to_string(i + 1) + ". " + text;
                 cvui::text(frame, 50, 110 + i * 30, text, 0.8, 0x000000);
             }
 
@@ -839,8 +848,9 @@ void VideoPlayer::displayVideoDetails() {
 
             for (int i = 0; i < currentPlaylist->videos.getSize(); ++i) {
                 string text =  currentPlaylist->videos.getIndexValue(i);
-                text= to_string(i + 1) + ". " + text.substr(text.find_last_of(  '/') + 1);
-                text = text.substr(text.find_last_of(  '\'') + 1);
+                text= text.substr(text.find_last_of(  '/') + 1);
+                text = text.substr(text.find_last_of(  '\\') + 1);
+                text = to_string(i + 1) + ". " + text;
                 cvui::text(frame, 50, 110 + i * 30, text, 0.8, 0x000000);
             }
 
