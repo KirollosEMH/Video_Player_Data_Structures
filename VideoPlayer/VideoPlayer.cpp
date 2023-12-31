@@ -138,86 +138,120 @@ void VideoPlayer::VideoPlayerMainMenu() {
             }
 
 
+
         }
 
         if (cvui::button(frame, x, y + buttonHeight * 4,buttonWidth,buttonHeight,  "Play Selected Playlist")) {
-            playPlaylist();
+            if(currentPlaylist){
+                playPlaylist();
+            }
+            else{
+                while (true) {
+                    // Clear the frame
+                    frame = cv::Scalar(200, 200, 200);
+
+                    cvui::text(frame, 350, 25, "Videos Available", 1.5, 0x000000);
+
+                    cvui::text(frame, 50, 100, "No playlist selected! press q", 0.8, 0x000000);
+                    // Update the cvui components
+                    cvui::update();
+
+                    // Show the frame
+                    cv::imshow("Video Player Menu", frame);
+
+                    // Check for keypress
+                    choice = cv::waitKey(20);
+                    if (choice == 'q') {
+                        break;
+                    }
+                }
+            }
         }
 
         if (cvui::button(frame, x, y + buttonHeight * 5,buttonWidth,buttonHeight,  "Add Video to Playlist")) {
-            addVideoRuntime();
+            if (currentPlaylist){
+                addVideoRuntime();
+            }
+            else{
+                while (true) {
+                    // Clear the frame
+                    frame = cv::Scalar(200, 200, 200);
+
+                    cvui::text(frame, 350, 25, "Videos Available", 1.5, 0x000000);
+
+                    cvui::text(frame, 50, 100, "No playlist selected! press q", 0.8, 0x000000);
+                    // Update the cvui components
+                    cvui::update();
+
+                    // Show the frame
+                    cv::imshow("Video Player Menu", frame);
+
+                    // Check for keypress
+                    choice = cv::waitKey(20);
+                    if (choice == 'q') {
+                        break;
+                    }
+                }
+            }
         }
 
         if (cvui::button(frame, x, y + buttonHeight * 6,buttonWidth,buttonHeight,  "Remove Video from Playlist")) {
-            removeVideoRuntime();
+            if(currentPlaylist){
+                removeVideoRuntime();
+            }
+            else{
+                while (true) {
+                    // Clear the frame
+                    frame = cv::Scalar(200, 200, 200);
+
+                    cvui::text(frame, 350, 25, "Videos Available", 1.5, 0x000000);
+
+                    cvui::text(frame, 50, 100, "No playlist selected! press q", 0.8, 0x000000);
+                    // Update the cvui components
+                    cvui::update();
+
+                    // Show the frame
+                    cv::imshow("Video Player Menu", frame);
+
+                    // Check for keypress
+                    choice = cv::waitKey(20);
+                    if (choice == 'q') {
+                        break;
+                    }
+                }
+            }
+
         }
 
-        if (cvui::button(frame, x, y + buttonHeight * 7,buttonWidth,buttonHeight,  "Organize Videos") && currentPlaylist) {
+        if (cvui::button(frame, x, y + buttonHeight * 7,buttonWidth,buttonHeight,  "Organize Videos")) {
             int choice_operation, old_pos, index;
             string choiceStr, old_posStr, indexStr;
             displayvideos();
-            while (true) {
-                // Clear the frame
-                frame = cv::Scalar(200, 200, 200);
+            if (currentPlaylist){
+                while (true) {
+                    // Clear the frame
+                    frame = cv::Scalar(200, 200, 200);
 
-                cvui::text(frame, 350, 25, "Organize Videos", 1.5, 0x000000);
-                cvui::text(frame, 300, 100, currentPlaylist ->PlayListName, 0.5, 0x000000);
-                for (int i = 0; i < currentPlaylist->videos.getSize(); ++i) {
-                    string text = to_string(i + 1) + ". " + currentPlaylist->videos.getIndexValue(i);
-                    // format text to print only the video name
-                    text = text.substr(text.find_last_of('/') + 1);
-                    cvui::text(frame, 300, 100 + 25 * (i+1), text , 0.5, 0x000000);
-                }
+                    cvui::text(frame, 350, 25, "Organize Videos", 1.5, 0x000000);
+                    cvui::text(frame, 300, 100, currentPlaylist ->PlayListName, 0.5, 0x000000);
+                    for (int i = 0; i < currentPlaylist->videos.getSize(); ++i) {
+                        string text = to_string(i + 1) + ". " + currentPlaylist->videos.getIndexValue(i);
+                        // format text to print only the video name
+                        text = text.substr(text.find_last_of('/') + 1);
+                        cvui::text(frame, 300, 100 + 25 * (i+1), text , 0.5, 0x000000);
+                    }
 
-                cvui::text(frame, 50, 100, "Choice", 0.5, 0x000000);
-                cvui::text(frame, 50, 125, "1. Shifting", 0.5, 0x000000);
-                cvui::text(frame, 50, 150, "2. Swapping", 0.5, 0x000000);
-                cvui::input(frame, 50, 175, 200, "Choice", choiceStr);
+                    cvui::text(frame, 50, 100, "Choice", 0.5, 0x000000);
+                    cvui::text(frame, 50, 125, "1. Shifting", 0.5, 0x000000);
+                    cvui::text(frame, 50, 150, "2. Swapping", 0.5, 0x000000);
+                    cvui::input(frame, 50, 175, 200, "Choice", choiceStr);
 
-                /* cvui::text(frame, 50, 200, "Old Position", 0.5, 0x000000);
-                cvui::input(frame, 50, 250, 200, "Old Position", old_posStr);
-                cvui::text(frame, 50, 300, "New Position", 0.5, 0x000000);
-                cvui::input(frame, 50, 350, 200, "New Position", indexStr); */
+                    /* cvui::text(frame, 50, 200, "Old Position", 0.5, 0x000000);
+                    cvui::input(frame, 50, 250, 200, "Old Position", old_posStr);
+                    cvui::text(frame, 50, 300, "New Position", 0.5, 0x000000);
+                    cvui::input(frame, 50, 350, 200, "New Position", indexStr); */
 
-                if (cvui::button(frame, 50, 225, 200, 50, "Organize Videos")) {
-                    break;
-                }
-                // Update the cvui components
-                cvui::update();
-
-                // Show the frame
-                cv::imshow("Video Player Menu", frame);
-
-                // Check for keypress
-                choice = cv::waitKey(20);
-            }
-            try {
-                choice_operation = stoi(choiceStr);
-                //old_pos = stoi(old_posStr);
-                //index = stoi(indexStr);
-                //organizeVideos(choice_operation, old_pos, index);
-            } catch (std::invalid_argument& e) {
-                std::cerr << "Invalid input for playlist selection." << std::endl;
-            }
-            displayvideos();
-            while (true){
-                frame = cv::Scalar(200, 200, 200);
-                //cvui::text(frame, 350, 25, "Organize Videos", 1.5, 0x000000);
-                cvui::text(frame, 300, 100, currentPlaylist ->PlayListName, 0.5, 0x000000);
-                for (int i = 0; i < currentPlaylist->videos.getSize(); ++i) {
-                    string text = to_string(i + 1) + ". " + currentPlaylist->videos.getIndexValue(i);
-                    // format text to print only the video name
-                    text = text.substr(text.find_last_of('/') + 1);
-                    cvui::text(frame, 300, 100 + 25 * (i+1), text , 0.5, 0x000000);
-                }
-
-                if (choice_operation == 1){
-                    cvui::text(frame, 350, 25, "Shifting", 1.5, 0x000000);
-                    cvui::text(frame, 50, 100, "Old Position", 0.5, 0x000000);
-                    cvui::input(frame, 50, 150, 200, "Old Position", old_posStr);
-                    cvui::text(frame, 50, 200, "New Position", 0.5, 0x000000);
-                    cvui::input(frame, 50, 250, 200, "New Position", indexStr);
-                    if (cvui::button(frame, 50, 300, 200, 50, "Organize Videos")) {
+                    if (cvui::button(frame, 50, 225, 200, 50, "Organize Videos")) {
                         break;
                     }
                     // Update the cvui components
@@ -229,13 +263,84 @@ void VideoPlayer::VideoPlayerMainMenu() {
                     // Check for keypress
                     choice = cv::waitKey(20);
                 }
-                else if (choice_operation == 2){
-                    cvui::text(frame, 350, 25, "Swapping", 1.5, 0x000000);
-                    cvui::text(frame, 50, 100, "Old Position", 0.5, 0x000000);
-                    cvui::input(frame, 50, 150, 200, "Old Position", old_posStr);
-                    cvui::text(frame, 50, 200, "New Position", 0.5, 0x000000);
-                    cvui::input(frame, 50, 250, 200, "New Position", indexStr);
-                    if (cvui::button(frame, 50, 300, 200, 50, "Organize Videos")) {
+                try {
+                    choice_operation = stoi(choiceStr);
+                    //old_pos = stoi(old_posStr);
+                    //index = stoi(indexStr);
+                    //organizeVideos(choice_operation, old_pos, index);
+                } catch (std::invalid_argument& e) {
+                    std::cerr << "Invalid input for playlist selection." << std::endl;
+                }
+                displayvideos();
+                while (true){
+                    frame = cv::Scalar(200, 200, 200);
+                    //cvui::text(frame, 350, 25, "Organize Videos", 1.5, 0x000000);
+                    cvui::text(frame, 300, 100, currentPlaylist ->PlayListName, 0.5, 0x000000);
+                    for (int i = 0; i < currentPlaylist->videos.getSize(); ++i) {
+                        string text = to_string(i + 1) + ". " + currentPlaylist->videos.getIndexValue(i);
+                        // format text to print only the video name
+                        text = text.substr(text.find_last_of('/') + 1);
+                        cvui::text(frame, 300, 100 + 25 * (i+1), text , 0.5, 0x000000);
+                    }
+
+                    if (choice_operation == 1){
+                        cvui::text(frame, 350, 25, "Shifting", 1.5, 0x000000);
+                        cvui::text(frame, 50, 100, "Old Position", 0.5, 0x000000);
+                        cvui::input(frame, 50, 150, 200, "Old Position", old_posStr);
+                        cvui::text(frame, 50, 200, "New Position", 0.5, 0x000000);
+                        cvui::input(frame, 50, 250, 200, "New Position", indexStr);
+                        if (cvui::button(frame, 50, 300, 200, 50, "Organize Videos")) {
+                            break;
+                        }
+                        // Update the cvui components
+                        cvui::update();
+
+                        // Show the frame
+                        cv::imshow("Video Player Menu", frame);
+
+                        // Check for keypress
+                        choice = cv::waitKey(20);
+                    }
+                    else if (choice_operation == 2){
+                        cvui::text(frame, 350, 25, "Swapping", 1.5, 0x000000);
+                        cvui::text(frame, 50, 100, "Old Position", 0.5, 0x000000);
+                        cvui::input(frame, 50, 150, 200, "Old Position", old_posStr);
+                        cvui::text(frame, 50, 200, "New Position", 0.5, 0x000000);
+                        cvui::input(frame, 50, 250, 200, "New Position", indexStr);
+                        if (cvui::button(frame, 50, 300, 200, 50, "Organize Videos")) {
+                            break;
+                        }
+                        // Update the cvui components
+                        cvui::update();
+
+                        // Show the frame
+                        cv::imshow("Video Player Menu", frame);
+
+                        // Check for keypress
+                        choice = cv::waitKey(20);
+                    }
+                }
+                try {
+                    old_pos = stoi(old_posStr);
+                    index = stoi(indexStr);
+                    organizeVideos(choice_operation, old_pos, index);
+                } catch (std::invalid_argument& e) {
+                    std::cerr << "Invalid input for playlist selection." << std::endl;
+                }
+                cout << "Organized Videos" << endl;
+
+                while (true){
+
+                    frame = cv::Scalar(200, 200, 200);
+                    cvui::text(frame, 350, 25, "After Organizations", 1.5, 0x000000);
+                    cvui::text(frame, 300, 100, currentPlaylist ->PlayListName, 0.5, 0x000000);
+                    for (int i = 0; i < currentPlaylist->videos.getSize(); ++i) {
+                        string text = to_string(i + 1) + ". " + currentPlaylist->videos.getIndexValue(i);
+                        // format text to print only the video name
+                        text = text.substr(text.find_last_of('/') + 1);
+                        cvui::text(frame, 300, 100 + 25 * (i+1), text , 0.5, 0x000000);
+                    }
+                    if (cvui::button(frame, 250, 200, 200, 50, "Mainmenu")) {
                         break;
                     }
                     // Update the cvui components
@@ -246,40 +351,29 @@ void VideoPlayer::VideoPlayerMainMenu() {
 
                     // Check for keypress
                     choice = cv::waitKey(20);
+
                 }
             }
-            try {
-                old_pos = stoi(old_posStr);
-                index = stoi(indexStr);
-                organizeVideos(choice_operation, old_pos, index);
-            } catch (std::invalid_argument& e) {
-                std::cerr << "Invalid input for playlist selection." << std::endl;
-            }
-            cout << "Organized Videos" << endl;
+            else{
+                while (true) {
+                    // Clear the frame
+                    frame = cv::Scalar(200, 200, 200);
 
-            while (true){
+                    cvui::text(frame, 350, 25, "Videos Available", 1.5, 0x000000);
 
-                frame = cv::Scalar(200, 200, 200);
-                cvui::text(frame, 350, 25, "After Organizations", 1.5, 0x000000);
-                cvui::text(frame, 300, 100, currentPlaylist ->PlayListName, 0.5, 0x000000);
-                for (int i = 0; i < currentPlaylist->videos.getSize(); ++i) {
-                    string text = to_string(i + 1) + ". " + currentPlaylist->videos.getIndexValue(i);
-                    // format text to print only the video name
-                    text = text.substr(text.find_last_of('/') + 1);
-                    cvui::text(frame, 300, 100 + 25 * (i+1), text , 0.5, 0x000000);
+                    cvui::text(frame, 50, 100, "No playlist selected! press q", 0.8, 0x000000);
+                    // Update the cvui components
+                    cvui::update();
+
+                    // Show the frame
+                    cv::imshow("Video Player Menu", frame);
+
+                    // Check for keypress
+                    choice = cv::waitKey(20);
+                    if (choice == 'q') {
+                        break;
+                    }
                 }
-                if (cvui::button(frame, 250, 200, 200, 50, "Mainmenu")) {
-                    break;
-                }
-                // Update the cvui components
-                cvui::update();
-
-                // Show the frame
-                cv::imshow("Video Player Menu", frame);
-
-                // Check for keypress
-                choice = cv::waitKey(20);
-
             }
 
 
@@ -313,8 +407,27 @@ void VideoPlayer::VideoPlayerMainMenu() {
                     choice = cv::waitKey(20);
                 }
             } else {
-                cerr << "No playlist selected. Please select a playlist first." << endl;
+                while (true) {
+                    // Clear the frame
+                    frame = cv::Scalar(200, 200, 200);
+
+                    cvui::text(frame, 350, 25, "Videos Available", 1.5, 0x000000);
+
+                    cvui::text(frame, 50, 100, "No playlist selected! press q", 0.8, 0x000000);
+                    // Update the cvui components
+                    cvui::update();
+
+                    // Show the frame
+                    cv::imshow("Video Player Menu", frame);
+
+                    // Check for keypress
+                    choice = cv::waitKey(20);
+                    if (choice == 'q') {
+                        break;
+                    }
+                }
             }
+
 
 
         }
@@ -395,7 +508,25 @@ void VideoPlayer::VideoPlayerMainMenu() {
 
 
             } else {
-                cerr << "No playlist selected. Please select a playlist first." << endl;
+                while (true) {
+                    // Clear the frame
+                    frame = cv::Scalar(200, 200, 200);
+
+                    cvui::text(frame, 350, 25, "Videos Available", 1.5, 0x000000);
+
+                    cvui::text(frame, 50, 100, "No playlist selected! press q", 0.8, 0x000000);
+                    // Update the cvui components
+                    cvui::update();
+
+                    // Show the frame
+                    cv::imshow("Video Player Menu", frame);
+
+                    // Check for keypress
+                    choice = cv::waitKey(20);
+                    if (choice == 'q') {
+                        break;
+                    }
+                }
             }
         }
 
@@ -596,7 +727,7 @@ void VideoPlayer::removeVideoRuntime() {
                 }
             }
         } else {
-            cvui::text(frame, 50, 80, "No playlist selected!", 0.8, 0x000000);
+            cvui::text(frame, 50, 100, "No playlist selected! press q", 0.8, 0x000000);
         }
 
         if (cvui::button(frame, 250, 400, "Remove Video")) {
