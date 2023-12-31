@@ -373,78 +373,7 @@ void VideoPlayer::VideoPlayerMainMenu() {
         
         if (cvui::button(frame, x, y + buttonHeight * 9,buttonWidth,buttonHeight,  "Display Video Details")) {
             if (currentPlaylist) {
-                string displayVideoDetailsStr;
-                int selectIndex = 1;
-                while (true) {
-                    // Clear the frame
-                    frame = cv::Scalar(200, 200, 200);
-
-                    cvui::text(frame, 350, 25, "Videos Available", 1.5, 0x000000);
-
-                    for (int i = 0; i < currentPlaylist->videos.getSize(); ++i) {
-                        string text =  currentPlaylist->videos.getIndexValue(i);
-                        text= to_string(i + 1) + ". " + text.substr(text.find_last_of(  '/') + 1);
-                        text = text.substr(text.find_last_of(  '\'') + 1);
-                        cvui::text(frame, 50, 110 + i * 30, text, 0.8, 0x000000);
-                    }
-
-                    cvui::input(frame, 50, 110 + 30 * currentPlaylist->videos.getSize(), 200, "Video Number", displayVideoDetailsStr);
-
-                    if (cvui::button(frame, 50, 110 + 30 * currentPlaylist->videos.getSize() + 50, 200, 50, "Display Video Details")) {
-                        while (true) {
-                            // Clear the frame
-                            frame = cv::Scalar(200, 200, 200);
-
-                            cvui::text(frame, 350, 25, "Video Details", 1.5, 0x000000);
-
-
-                            VideoCapture video(currentPlaylist->videos.getIndexValue(selectIndex - 1));
-
-
-                            double fps = video.get(CAP_PROP_FPS);
-                            int frameCount = int(video.get(CAP_PROP_FRAME_COUNT));
-                            int width = int(video.get(CAP_PROP_FRAME_WIDTH));
-                            int height = int(video.get(CAP_PROP_FRAME_HEIGHT));
-                            double duration = frameCount / fps;
-
-                            string text = currentPlaylist->videos.getIndexValue(selectIndex - 1);
-                            text= text.substr(text.find_last_of(  '/') + 1);
-
-                            cvui::text(frame, 50, 100, "Video: " + text, 0.8, 0x000000);
-                            cvui::text(frame, 50, 130, "Duration: " + to_string(duration) + " seconds", 0.8, 0x000000);
-                            cvui::text(frame, 50, 160, "Frame Count: " + to_string(frameCount), 0.8, 0x000000);
-                            cvui::text(frame, 50, 190, "Width: " + to_string(width) + " px, Height: " + to_string(height) + " px", 0.8, 0x000000);
-                            cvui::text(frame, 50, 220, "Frame Rate: " + to_string(fps) + " FPS", 0.8, 0x000000);
-
-
-                            if (cvui::button(frame, 600, 100, 200, 50, "Back")) {
-                                break;
-                            }
-                            // Update the cvui components
-                            cvui::update();
-
-                            // Show the frame
-                            cv::imshow("Video Player Menu", frame);
-
-                            // Check for keypress
-                            choice = cv::waitKey(20);
-                        }
-                    }
-
-                    if (cvui::button(frame, 50, 110 + 30 * currentPlaylist->videos.getSize() + 110, 200, 50, "Back")) {
-                        break;
-                    }
-                    // Update the cvui components
-                    cvui::update();
-
-                    // Show the frame
-                    cv::imshow("Video Player Menu", frame);
-
-                    // Check for keypress
-                    choice = cv::waitKey(20);
-                }
-
-
+                displayVideoDetails();
             } else {
                 while (true) {
                     // Clear the frame
@@ -880,6 +809,9 @@ void VideoPlayer::displayvideos() {
 
             // Check for keypress
             choice = cv::waitKey(20);
+            if (choice == 'q') {
+                break;
+            }
         }
     } else {
         cerr << "No playlist selected. Please select a playlist first." << endl;
@@ -888,33 +820,116 @@ void VideoPlayer::displayvideos() {
 
 void VideoPlayer::displayVideoDetails() {
     if (currentPlaylist) {
-        displayvideos();
-        int index;
-        cout << "Enter the index of the video to display details: ";
-        cin >> index;
-        string videoPath = currentPlaylist->videos.getIndexValue(index - 1);
+//        displayvideos();
+//        int index;
+//        cout << "Enter the index of the video to display details: ";
+//        cin >> index;
+//        string videoPath = currentPlaylist->videos.getIndexValue(index - 1);
+//
+//
+//        VideoCapture video(videoPath);
+//
+//        if (!video.isOpened()) {
+//            cerr << "Error opening video file: " << videoPath << endl;
+//            return;
+//        }
+//
+//        double fps = video.get(CAP_PROP_FPS);
+//        int frameCount = int(video.get(CAP_PROP_FRAME_COUNT));
+//        int width = int(video.get(CAP_PROP_FRAME_WIDTH));
+//        int height = int(video.get(CAP_PROP_FRAME_HEIGHT));
+//        double duration = frameCount / fps;
+//
+//        cout << "Video: " << videoPath << endl;
+//        cout << "Duration: " << duration << " seconds" << endl;
+//        cout << "Frame Count: " << frameCount << endl;
+//        cout << "Width: " << width << " px, Height: " << height << " px" << endl;
+//        cout << "Frame Rate: " << fps << " FPS" << endl;
+//
+//        video.release();
+        string displayVideoDetailsStr;
+        int selectIndex = -1;
+        char choice;
+        cv::Mat frame = cv::Mat(500, 1000, CV_8UC3);
+        while (true) {
+            // Clear the frame
+            frame = cv::Scalar(200, 200, 200);
+
+            cvui::text(frame, 350, 25, "Videos Available", 1.5, 0x000000);
+
+            for (int i = 0; i < currentPlaylist->videos.getSize(); ++i) {
+                string text =  currentPlaylist->videos.getIndexValue(i);
+                text= to_string(i + 1) + ". " + text.substr(text.find_last_of(  '/') + 1);
+                text = text.substr(text.find_last_of(  '\'') + 1);
+                cvui::text(frame, 50, 110 + i * 30, text, 0.8, 0x000000);
+            }
+
+            cvui::input(frame, 50, 110 + 30 * currentPlaylist->videos.getSize(), 200, "Video Number", displayVideoDetailsStr);
+
+            if (cvui::button(frame, 50, 110 + 30 * currentPlaylist->videos.getSize() + 50, 200, 50, "Display Video Details")) {
+                while (true) {
+                    // Clear the frame
+                    frame = cv::Scalar(200, 200, 200);
+
+                    cvui::text(frame, 350, 25, "Video Details", 1.5, 0x000000);
 
 
-        VideoCapture video(videoPath);
+                    VideoCapture video(currentPlaylist->videos.getIndexValue(selectIndex - 1));
+                    if (!video.isOpened()) {
+                        break;
+                    }
 
-        if (!video.isOpened()) {
-            cerr << "Error opening video file: " << videoPath << endl;
-            return;
+
+                    double fps = video.get(CAP_PROP_FPS);
+                    int frameCount = int(video.get(CAP_PROP_FRAME_COUNT));
+                    int width = int(video.get(CAP_PROP_FRAME_WIDTH));
+                    int height = int(video.get(CAP_PROP_FRAME_HEIGHT));
+                    double duration = frameCount / fps;
+
+                    string text = currentPlaylist->videos.getIndexValue(selectIndex - 1);
+                    text= text.substr(text.find_last_of(  '/') + 1);
+
+                    cvui::text(frame, 50, 100, "Video: " + text, 0.8, 0x000000);
+                    cvui::text(frame, 50, 130, "Duration: " + to_string(duration) + " seconds", 0.8, 0x000000);
+                    cvui::text(frame, 50, 160, "Frame Count: " + to_string(frameCount), 0.8, 0x000000);
+                    cvui::text(frame, 50, 190, "Width: " + to_string(width) + " px, Height: " + to_string(height) + " px", 0.8, 0x000000);
+                    cvui::text(frame, 50, 220, "Frame Rate: " + to_string(fps) + " FPS", 0.8, 0x000000);
+
+
+                    if (cvui::button(frame, 600, 100, 200, 50, "Back")) {
+                        break;
+                    }
+                    // Update the cvui components
+                    cvui::update();
+
+                    // Show the frame
+                    cv::imshow("Video Player Menu", frame);
+
+                    // Check for keypress
+                    choice = cv::waitKey(20);
+                    if (choice == 'q') {
+                        break;
+                    }
+                }
+            }
+
+            if (cvui::button(frame, 50, 110 + 30 * currentPlaylist->videos.getSize() + 110, 200, 50, "Back")) {
+                break;
+            }
+            // Update the cvui components
+            cvui::update();
+
+            // Show the frame
+            cv::imshow("Video Player Menu", frame);
+
+            // Check for keypress
+            choice = cv::waitKey(20);
+            if (choice == 'q') {
+                break;
+            }
         }
 
-        double fps = video.get(CAP_PROP_FPS);
-        int frameCount = int(video.get(CAP_PROP_FRAME_COUNT));
-        int width = int(video.get(CAP_PROP_FRAME_WIDTH));
-        int height = int(video.get(CAP_PROP_FRAME_HEIGHT));
-        double duration = frameCount / fps;
 
-        cout << "Video: " << videoPath << endl;
-        cout << "Duration: " << duration << " seconds" << endl;
-        cout << "Frame Count: " << frameCount << endl;
-        cout << "Width: " << width << " px, Height: " << height << " px" << endl;
-        cout << "Frame Rate: " << fps << " FPS" << endl;
-
-        video.release();
     } else {
         cerr << "No playlist selected. Please select a playlist first." << endl;
     }
