@@ -184,161 +184,7 @@ void VideoPlayer::VideoPlayerMainMenu() {
         }
 
         if (cvui::button(frame, x, y + buttonHeight * 7,buttonWidth,buttonHeight,  "Organize Videos")) {
-            int choice_operation , old_pos , index;
-            string choiceStr, old_posStr, indexStr;
-            displayvideos();
-            if (currentPlaylist){
-                while (true) {
-                    // Clear the frame
-                    frame = cv::Scalar(200, 200, 200);
-
-                    cvui::text(frame, 350, 25, "Organize Videos", 1.5, 0x000000);
-                    cvui::text(frame, 300, 100, currentPlaylist ->PlayListName, 0.5, 0x000000);
-                    for (int i = 0; i < currentPlaylist->videos.getSize(); ++i) {
-                        string text = to_string(i + 1) + ". " + currentPlaylist->videos.getIndexValue(i);
-                        // format text to print only the video name
-                        text = text.substr(text.find_last_of('/') + 1);
-                        cvui::text(frame, 300, 100 + 25 * (i+1), text , 0.5, 0x000000);
-                    }
-
-                    cvui::text(frame, 50, 100, "Choice", 0.5, 0x000000);
-                    cvui::text(frame, 50, 125, "1. Shifting", 0.5, 0x000000);
-                    cvui::text(frame, 50, 150, "2. Swapping", 0.5, 0x000000);
-                    cvui::input(frame, 50, 175, 200, "Choice", choiceStr);
-
-                    /* cvui::text(frame, 50, 200, "Old Position", 0.5, 0x000000);
-                    cvui::input(frame, 50, 250, 200, "Old Position", old_posStr);
-                    cvui::text(frame, 50, 300, "New Position", 0.5, 0x000000);
-                    cvui::input(frame, 50, 350, 200, "New Position", indexStr); */
-
-                    if (cvui::button(frame, 50, 225, 200, 50, "Organize Videos")) {
-                        break;
-                    }
-                    // Update the cvui components
-                    cvui::update();
-
-                    // Show the frame
-                    cv::imshow("Video Player Menu", frame);
-
-                    // Check for keypress
-                    choice = cv::waitKey(20);
-
-                }
-                try {
-                    choice_operation = stoi(choiceStr);
-                    //old_pos = stoi(old_posStr);
-                    //index = stoi(indexStr);
-                    //organizeVideos(choice_operation, old_pos, index);
-                } catch (std::invalid_argument& e) {
-                    std::cerr << "Invalid input for playlist selection." << std::endl;
-                }
-                displayvideos();
-                while (true){
-                    frame = cv::Scalar(200, 200, 200);
-                    //cvui::text(frame, 350, 25, "Organize Videos", 1.5, 0x000000);
-                    cvui::text(frame, 300, 100, currentPlaylist ->PlayListName, 0.5, 0x000000);
-                    for (int i = 0; i < currentPlaylist->videos.getSize(); ++i) {
-                        string text = to_string(i + 1) + ". " + currentPlaylist->videos.getIndexValue(i);
-                        // format text to print only the video name
-                        text = text.substr(text.find_last_of('/') + 1);
-                        cvui::text(frame, 300, 100 + 25 * (i+1), text , 0.5, 0x000000);
-                    }
-
-                    if (choice_operation == 1){
-                        cvui::text(frame, 350, 25, "Shifting", 1.5, 0x000000);
-                        cvui::text(frame, 50, 100, "Old Position", 0.5, 0x000000);
-                        cvui::input(frame, 50, 150, 200, "Old Position", old_posStr);
-                        cvui::text(frame, 50, 200, "New Position", 0.5, 0x000000);
-                        cvui::input(frame, 50, 250, 200, "New Position", indexStr);
-                        if (cvui::button(frame, 50, 300, 200, 50, "Organize Videos")) {
-                            break;
-                        }
-                        // Update the cvui components
-                        cvui::update();
-
-                        // Show the frame
-                        cv::imshow("Video Player Menu", frame);
-
-                        // Check for keypress
-                        choice = cv::waitKey(20);
-                    }
-                    else if (choice_operation == 2){
-                        cvui::text(frame, 350, 25, "Swapping", 1.5, 0x000000);
-                        cvui::text(frame, 50, 100, "Old Position", 0.5, 0x000000);
-                        cvui::input(frame, 50, 150, 200, "Old Position", old_posStr);
-                        cvui::text(frame, 50, 200, "New Position", 0.5, 0x000000);
-                        cvui::input(frame, 50, 250, 200, "New Position", indexStr);
-                        if (cvui::button(frame, 50, 300, 200, 50, "Organize Videos")) {
-                            break;
-                        }
-                        // Update the cvui components
-                        cvui::update();
-
-                        // Show the frame
-                        cv::imshow("Video Player Menu", frame);
-
-                        // Check for keypress
-                        choice = cv::waitKey(20);
-
-                    }
-                }
-                try {
-                    old_pos = stoi(old_posStr);
-                    index = stoi(indexStr);
-                    organizeVideos(choice_operation, old_pos, index);
-                } catch (std::invalid_argument& e) {
-                    std::cerr << "Invalid input for playlist selection." << std::endl;
-                }
-                cout << "Organized Videos" << endl;
-
-                while (true){
-
-                    frame = cv::Scalar(200, 200, 200);
-                    cvui::text(frame, 350, 25, "After Organizations", 1.5, 0x000000);
-                    cvui::text(frame, 300, 100, currentPlaylist ->PlayListName, 0.5, 0x000000);
-                    for (int i = 0; i < currentPlaylist->videos.getSize(); ++i) {
-                        string text = to_string(i + 1) + ". " + currentPlaylist->videos.getIndexValue(i);
-                        // format text to print only the video name
-                        text = text.substr(text.find_last_of('/') + 1);
-                        cvui::text(frame, 300, 100 + 25 * (i+1), text , 0.5, 0x000000);
-                    }
-                    if (cvui::button(frame, 250, 200, 200, 50, "Mainmenu")) {
-                        break;
-                    }
-                    // Update the cvui components
-                    cvui::update();
-
-                    // Show the frame
-                    cv::imshow("Video Player Menu", frame);
-
-                    // Check for keypress
-                    choice = cv::waitKey(20);
-
-                }
-            }
-            else{
-                while (true) {
-                    // Clear the frame
-                    frame = cv::Scalar(200, 200, 200);
-
-                    cvui::text(frame, 350, 25, "Videos Available", 1.5, 0x000000);
-
-                    cvui::text(frame, 50, 100, "No playlist selected! press q", 0.8, 0x000000);
-                    // Update the cvui components
-                    cvui::update();
-
-                    // Show the frame
-                    cv::imshow("Video Player Menu", frame);
-
-                    // Check for keypress
-                    choice = cv::waitKey(20);
-                    if (choice == 'q') {
-                        break;
-                    }
-                }
-            }
-
-
+            organizeVideosRuntime();
         }
 
         if (cvui::button(frame, x, y + buttonHeight * 8,buttonWidth,buttonHeight,  "Display Videos")) {
@@ -430,7 +276,169 @@ void VideoPlayer::removeVideo(int index) {
     }
 }
 
-// Assuming the necessary headers are included and namespaces are used.
+void VideoPlayer::organizeVideosRuntime() {
+    if (currentPlaylist) {
+        int choice_operation=-1 , old_pos , index,succesful=0;
+        string choiceStr, old_posStr, indexStr;
+        char choice;
+        cv::Mat frame = cv::Mat(500, 1000, CV_8UC3);
+        while (true) {
+            // Clear the frame
+            frame = cv::Scalar(200, 200, 200);
+
+            cvui::text(frame, 350, 25, "Organize Videos", 1.5, 0x000000);
+            cvui::text(frame, 300, 100, currentPlaylist ->PlayListName, 0.5, 0x000000);
+            for (int i = 0; i < currentPlaylist->videos.getSize(); ++i) {
+                string text = currentPlaylist->videos.getIndexValue(i);
+                // format text to print only the video name
+                text = to_string(i + 1) + ". " + text.substr(text.find_last_of('/') + 1);
+                cvui::text(frame, 300, 100 + 25 * (i+1), text , 0.5, 0x000000);
+            }
+
+            cvui::text(frame, 50, 100, "Choice", 0.5, 0x000000);
+            cvui::text(frame, 50, 125, "1. Shifting", 0.5, 0x000000);
+            cvui::text(frame, 50, 150, "2. Swapping", 0.5, 0x000000);
+            cvui::input(frame, 50, 175, 200, "Choice", choiceStr);
+
+            /* cvui::text(frame, 50, 200, "Old Position", 0.5, 0x000000);
+            cvui::input(frame, 50, 250, 200, "Old Position", old_posStr);
+            cvui::text(frame, 50, 300, "New Position", 0.5, 0x000000);
+            cvui::input(frame, 50, 350, 200, "New Position", indexStr); */
+
+            if (cvui::button(frame, 50, 225, 200, 50, "Organize Videos")) {
+                break;
+            }
+            // Update the cvui components
+            cvui::update();
+
+            // Show the frame
+            cv::imshow("Video Player Menu", frame);
+
+            // Check for keypress
+            choice = cv::waitKey(20);
+            if (choice == 'q') {
+                break;
+            }
+
+        }
+        try {
+            choice_operation = stoi(choiceStr);
+            //old_pos = stoi(old_posStr);
+            //index = stoi(indexStr);
+            //organizeVideos(choice_operation, old_pos, index);
+        } catch (std::invalid_argument& e) {
+            std::cerr << "Invalid input for playlist selection." << std::endl;
+        }
+        while (choice_operation == 1 || choice_operation == 2) {
+            frame = cv::Scalar(200, 200, 200);
+            //cvui::text(frame, 350, 25, "Organize Videos", 1.5, 0x000000);
+            cvui::text(frame, 300, 100, currentPlaylist ->PlayListName, 0.5, 0x000000);
+            for (int i = 0; i < currentPlaylist->videos.getSize(); ++i) {
+                string text = currentPlaylist->videos.getIndexValue(i);
+                // format text to print only the video name
+                text = to_string(i + 1) + ". " + text.substr(text.find_last_of('/') + 1);
+                cvui::text(frame, 300, 100 + 25 * (i+1), text , 0.5, 0x000000);
+            }
+
+            if (choice_operation == 1){
+                cvui::text(frame, 350, 25, "Shifting", 1.5, 0x000000);
+                cvui::text(frame, 50, 100, "Old Position", 0.5, 0x000000);
+                cvui::input(frame, 50, 150, 200, "Old Position", old_posStr);
+                cvui::text(frame, 50, 200, "New Position", 0.5, 0x000000);
+                cvui::input(frame, 50, 250, 200, "New Position", indexStr);
+                if (cvui::button(frame, 50, 300, 200, 50, "Organize Videos")) {
+                    break;
+                }
+
+            }
+            else if (choice_operation == 2){
+                cvui::text(frame, 350, 25, "Swapping", 1.5, 0x000000);
+                cvui::text(frame, 50, 100, "Old Position", 0.5, 0x000000);
+                cvui::input(frame, 50, 150, 200, "Old Position", old_posStr);
+                cvui::text(frame, 50, 200, "New Position", 0.5, 0x000000);
+                cvui::input(frame, 50, 250, 200, "New Position", indexStr);
+                if (cvui::button(frame, 50, 300, 200, 50, "Organize Videos")) {
+                    break;
+                }
+
+
+
+            }
+            // Update the cvui components
+            cvui::update();
+
+            // Show the frame
+            cv::imshow("Video Player Menu", frame);
+
+            // Check for keypress
+            choice = cv::waitKey(20);
+            if (choice == 'q') {
+                break;
+            }
+
+        }
+        try {
+            old_pos = stoi(old_posStr);
+            index = stoi(indexStr);
+            organizeVideos(choice_operation, old_pos, index);
+            succesful = 1;
+        } catch (std::invalid_argument& e) {
+            succesful = 0;
+            std::cerr << "Invalid input for playlist selection." << std::endl;
+        }
+        cout << "Organized Videos" << endl;
+
+        while (succesful == 1){
+
+            frame = cv::Scalar(200, 200, 200);
+            cvui::text(frame, 350, 25, "After Organizations", 1.5, 0x000000);
+            cvui::text(frame, 300, 100, currentPlaylist ->PlayListName, 0.5, 0x000000);
+            for (int i = 0; i < currentPlaylist->videos.getSize(); ++i) {
+                string text = currentPlaylist->videos.getIndexValue(i);
+                // format text to print only the video name
+                text = to_string(i + 1) + ". " + text.substr(text.find_last_of('/') + 1);
+                cvui::text(frame, 300, 100 + 25 * (i+1), text , 0.5, 0x000000);
+            }
+            if (cvui::button(frame, 250, 200, 200, 50, "Mainmenu")) {
+                break;
+            }
+            // Update the cvui components
+            cvui::update();
+
+            // Show the frame
+            cv::imshow("Video Player Menu", frame);
+
+            // Check for keypress
+            choice = cv::waitKey(20);
+            if ( choice == 'q'){
+                break;
+            }
+
+        }
+    } else {
+        char choice;
+        cv::Mat frame = cv::Mat(500, 1000, CV_8UC3);
+        while (true) {
+            // Clear the frame
+            frame = cv::Scalar(200, 200, 200);
+
+            cvui::text(frame, 350, 25, "Videos Available", 1.5, 0x000000);
+
+            cvui::text(frame, 50, 100, "No playlist selected! press q", 0.8, 0x000000);
+            // Update the cvui components
+            cvui::update();
+
+            // Show the frame
+            cv::imshow("Video Player Menu", frame);
+
+            // Check for keypress
+            choice = cv::waitKey(20);
+            if (choice == 'q') {
+                break;
+            }
+        }
+    }
+}
 
 void VideoPlayer::organizeVideos(int choice, int old_pos, int index) {
     // int choice;

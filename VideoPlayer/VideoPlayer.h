@@ -70,6 +70,8 @@ public:
 
     void organizeVideos(int choice, int old_pos, int index);
 
+    void organizeVideosRuntime();
+
     void displayvideos();
 
     void displayPlaylists();
