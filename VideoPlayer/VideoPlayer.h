@@ -50,7 +50,7 @@ public:
 
     void createPlaylist();
 
-    void deletePlaylist(int index);
+    void deletePlaylist();
 
     void selectPlaylist(int index);
 
