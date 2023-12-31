@@ -2,6 +2,7 @@
 #include "VideoPlayer.h"
 #include <string>
 #include <fstream>
+#include <nfd.h>
 #define CVUI_IMPLEMENTATION
 #include "../cvui.h"
 
@@ -285,7 +286,36 @@ void VideoPlayer::VideoPlayerMainMenu() {
         }
 
         if (cvui::button(frame, x, y + buttonHeight * 8,buttonWidth,buttonHeight,  "Display Videos")) {
-            displayvideos();
+            if (currentPlaylist) {
+                while (true) {
+                    // Clear the frame
+                    frame = cv::Scalar(200, 200, 200);
+
+                    cvui::text(frame, 350, 25, "Videos Available", 1.5, 0x000000);
+
+                    for (int i = 0; i < currentPlaylist->videos.getSize(); ++i) {
+                        string text = to_string(i + 1) + ". " + currentPlaylist->videos.getIndexValue(i);
+                        text= text.substr(text.find_last_of(  '/') + 1);
+                        cvui::text(frame, 50, 110 + i * 30, text, 0.8, 0x000000);
+                    }
+
+                    if (cvui::button(frame, 50, 100 + 25 * playlists.size() + 50, 200, 50, "Back")) {
+                        break;
+                    }
+                    // Update the cvui components
+                    cvui::update();
+
+                    // Show the frame
+                    cv::imshow("Video Player Menu", frame);
+
+                    // Check for keypress
+                    choice = cv::waitKey(20);
+                }
+            } else {
+                cerr << "No playlist selected. Please select a playlist first." << endl;
+            }
+
+
         }
 
         if (cvui::button(frame, x, y + buttonHeight * 9,buttonWidth,buttonHeight,  "Display Video Details")) {
@@ -438,13 +468,22 @@ void VideoPlayer::playPreviousVideo() {
 
 void VideoPlayer::addVideoRuntime() {
     if (currentPlaylist) {
-        string videoPath;
-        cout << "Enter the path of the video to add: ";
-        getline(cin, videoPath);
-        //cout << videoPath;
-        addVideo(videoPath);
+        NFD_Init();
+
+        nfdchar_t *outPath;
+        nfdfilteritem_t filterItem = {"Videos", "mp4,mov,avi"};
+        nfdresult_t result = NFD_OpenDialog(&outPath, &filterItem, 1, NULL);
+
+        if (result == NFD_OKAY) {
+            addVideo(outPath);
+        } else if (result == NFD_CANCEL) {
+            std::cout << "User pressed cancel." << std::endl;
+        } else {
+            std::cerr << "Error opening file dialog." << std::endl;
+        }
+        NFD_Quit();
     } else {
-        cerr << "No playlist selected. Please select a playlist first." << endl;
+        std::cerr << "No playlist selected. Please select a playlist first." << std::endl;
     }
 }
 
