@@ -52,7 +52,7 @@ public:
 
     void deletePlaylist();
 
-    void selectPlaylist(int index);
+    void selectPlaylist();
 
     void addVideo(const string& videoPath);
 

@@ -94,49 +94,11 @@ void VideoPlayer::VideoPlayerMainMenu() {
 
         // Remaining buttons with the same style
         if (cvui::button(frame, x, y + buttonHeight * 2,buttonWidth,buttonHeight,  "Delete Playlist")) {
-            deletePlaylist();  // Adjust for 1-based index
+            deletePlaylist();
         }
 
         if (cvui::button(frame, x, y + buttonHeight * 3,buttonWidth,buttonHeight,  "Select Playlists")) {
-            int selectIndex = 1;
-            string selectPlaylistStr;
-            while (true) {
-                // Clear the frame
-                frame = cv::Scalar(200, 200, 200);
-
-                cvui::text(frame, 350, 25, "Select Playlist", 1.5, 0x000000);
-
-                for (size_t i = 0; i < playlists.size(); ++i) {
-                    string text = to_string(i + 1) + ". " + playlists[i].PlayListName;
-                    cvui::text(frame, 50, 100 + 25 * i, text , 0.8, 0x000000);
-                }
-
-                cvui::input(frame, 50, 100 + 25 * playlists.size(), 200, "Video Number", selectPlaylistStr);
-
-                if (cvui::button(frame, 50, 100 + 25 * playlists.size() + 50, 200, 50, "Select Playlist")) {
-                    break;
-                }
-                // Update the cvui components
-                cvui::update();
-
-                // Show the frame
-                cv::imshow("Video Player Menu", frame);
-
-                // Check for keypress
-                choice = cv::waitKey(20);
-                if (choice == 'q') {
-                    break;
-                }
-            }
-            try {
-                selectIndex = stoi(selectPlaylistStr);
-                selectPlaylist(selectIndex - 1);
-            } catch (std::invalid_argument& e) {
-                std::cerr << "Invalid input for playlist selection." << std::endl;
-            }
-
-
-
+            selectPlaylist();
         }
 
         if (cvui::button(frame, x, y + buttonHeight * 4,buttonWidth,buttonHeight,  "Play Selected Playlist")) {
@@ -844,7 +806,7 @@ void VideoPlayer::deletePlaylist() {
         if (index >= 0 && index < playlists.size()) {
             playlists.erase(playlists.begin() + index);
             if (!playlists.empty()) {
-                selectPlaylist(0);
+                currentPlaylist = &playlists[0];
             } else {
                 currentPlaylist = nullptr;
             }
@@ -857,13 +819,54 @@ void VideoPlayer::deletePlaylist() {
 
 }
 
-void VideoPlayer::selectPlaylist(int index) {
-    if (index >= 0 && index < playlists.size()) {
-        currentPlaylist = &playlists[index];
-        cout << "Playlist '" << playlists[index].PlayListName << "' selected." << endl;
-    } else {
-        cerr << "Invalid index for selecting playlist." << endl;
+void VideoPlayer::selectPlaylist() {
+    int selectIndex = 1;
+    string selectPlaylistStr;
+
+    cv::Mat frame = cv::Mat(500, 1000, CV_8UC3);
+    char choice;
+    while (true) {
+        // Clear the frame
+        frame = cv::Scalar(200, 200, 200);
+
+        cvui::text(frame, 350, 25, "Select Playlist", 1.5, 0x000000);
+
+        for (size_t i = 0; i < playlists.size(); ++i) {
+            string text = to_string(i + 1) + ". " + playlists[i].PlayListName;
+            cvui::text(frame, 50, 100 + 25 * i, text , 0.8, 0x000000);
+        }
+
+        cvui::input(frame, 50, 100 + 25 * playlists.size(), 200, "Video Number", selectPlaylistStr);
+
+        if (cvui::button(frame, 50, 100 + 25 * playlists.size() + 50, 200, 50, "Select Playlist")) {
+            break;
+        }
+        // Update the cvui components
+        cvui::update();
+
+        // Show the frame
+        cv::imshow("Video Player Menu", frame);
+
+        // Check for keypress
+        choice = cv::waitKey(20);
+        if (choice == 'q') {
+            break;
+        }
     }
+    try {
+        selectIndex = stoi(selectPlaylistStr);
+        selectIndex--;
+        if (selectIndex >= 0 && selectIndex < playlists.size()) {
+            currentPlaylist = &playlists[selectIndex];
+            cout << "Playlist '" << playlists[selectIndex].PlayListName << "' selected." << endl;
+        } else {
+            cerr << "Invalid index for selecting playlist." << endl;
+        }
+    } catch (std::invalid_argument& e) {
+        std::cerr << "Invalid input for playlist selection." << std::endl;
+    }
+
+
 }
 
 void VideoPlayer::displayPlaylists() {
