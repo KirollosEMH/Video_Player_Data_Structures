@@ -866,7 +866,11 @@ void VideoPlayer::displayVideoDetails() {
                     frame = cv::Scalar(200, 200, 200);
 
                     cvui::text(frame, 350, 25, "Video Details", 1.5, 0x000000);
-
+                    try {
+                        selectIndex = stoi(displayVideoDetailsStr);
+                    } catch (std::invalid_argument& e) {
+                        std::cerr << "Invalid input for playlist selection." << std::endl;
+                    }
 
                     VideoCapture video(currentPlaylist->videos.getIndexValue(selectIndex - 1));
                     if (!video.isOpened()) {
@@ -880,8 +884,10 @@ void VideoPlayer::displayVideoDetails() {
                     int height = int(video.get(CAP_PROP_FRAME_HEIGHT));
                     double duration = frameCount / fps;
 
+
                     string text = currentPlaylist->videos.getIndexValue(selectIndex - 1);
                     text= text.substr(text.find_last_of(  '/') + 1);
+                    text = text.substr(text.find_last_of(  '\\') + 1);
 
                     cvui::text(frame, 50, 100, "Video: " + text, 0.8, 0x000000);
                     cvui::text(frame, 50, 130, "Duration: " + to_string(duration) + " seconds", 0.8, 0x000000);
