@@ -396,8 +396,8 @@ void VideoPlayer::playPlaylist() {
         VideoCapture video(videoPath);
 
         if (!video.isOpened()) {
-            cerr << "Error opening video file." << endl;
-            return;
+            currentPlaylist->videos.erase(currentPlaylist->videos.getIndex(videoPath));
+            continue;
         }
         double fps = video.get(CAP_PROP_FPS);
         int originalWidth = video.get(CAP_PROP_FRAME_WIDTH);

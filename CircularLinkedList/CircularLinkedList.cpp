@@ -329,12 +329,27 @@ ElementType CircularLinkedList<ElementType>::getIndexValue(int index) const {
     return iterator->data;
 }
 
-template class CircularLinkedList<int>;
-template class CircularLinkedList<double>;
+template<typename ElementType>
+int CircularLinkedList<ElementType>::getIndex(std::string videoName) const {
+
+    NodePointer iterator = first;
+    for (int i = 0; i < getSize(); ++i) {
+        if (iterator->data == videoName) {
+            return i;
+        }
+        iterator = iterator->next;
+    }
+    return -1;
+
+
+}
+
+//template class CircularLinkedList<int>;
+//template class CircularLinkedList<double>;
 template class CircularLinkedList<string>;
 //template class CircularLinkedList<cv::VideoCapture>;
 
-template ostream& operator<<(ostream& out, const CircularLinkedList<int>& aList);
-template ostream& operator<<(ostream& out, const CircularLinkedList<double>& aList);
+//template ostream& operator<<(ostream& out, const CircularLinkedList<int>& aList);
+//template ostream& operator<<(ostream& out, const CircularLinkedList<double>& aList);
 template ostream& operator<<(ostream& out, const CircularLinkedList<string>& aList);
 //template ostream& operator<<(ostream& out, const CircularLinkedList<cv::VideoCapture>& aList);

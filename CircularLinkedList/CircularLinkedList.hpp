@@ -145,6 +145,17 @@ public:
 
     ElementType getIndexValue(int index) const;
 
+    /*
+     * @return the data value stored in the element at the given index
+    */
+
+    int getIndex(string videoName) const;
+
+    /*
+     * @return the index of the element containing the given video name
+    */
+
+
 };
 
 
