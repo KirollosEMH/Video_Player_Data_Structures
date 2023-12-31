@@ -546,7 +546,7 @@ void VideoPlayer::removeVideoRuntime() {
                 }
             }
 
-            if (cvui::button(frame, 600, 300,200,50, "Back")) {
+            if (cvui::button(frame, 750, 300,200,50, "Back")) {
                 break;
             }
 
