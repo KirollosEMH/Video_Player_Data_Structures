@@ -343,31 +343,7 @@ void VideoPlayer::VideoPlayerMainMenu() {
 
         if (cvui::button(frame, x, y + buttonHeight * 8,buttonWidth,buttonHeight,  "Display Videos")) {
             if (currentPlaylist) {
-                while (true) {
-                    // Clear the frame
-                    frame = cv::Scalar(200, 200, 200);
-
-                    cvui::text(frame, 350, 25, "Videos Available", 1.5, 0x000000);
-
-                    for (int i = 0; i < currentPlaylist->videos.getSize(); ++i) {
-                        string text =  currentPlaylist->videos.getIndexValue(i);
-                        text= to_string(i + 1) + ". " + text.substr(text.find_last_of(  '/') + 1);
-                        text = text.substr(text.find_last_of(  '\'') + 1);
-                        cvui::text(frame, 50, 110 + i * 30, text, 0.8, 0x000000);
-                    }
-
-                    if (cvui::button(frame, 600, 100, 200, 50, "Back")) {
-                        break;
-                    }
-                    // Update the cvui components
-                    cvui::update();
-
-                    // Show the frame
-                    cv::imshow("Video Player Menu", frame);
-
-                    // Check for keypress
-                    choice = cv::waitKey(20);
-                }
+                displayvideos();
             } else {
                 while (true) {
                     // Clear the frame
@@ -878,7 +854,33 @@ void VideoPlayer::displayPlaylists() {
 
 void VideoPlayer::displayvideos() {
     if (currentPlaylist) {
-        currentPlaylist->videos.displayVideoNames(cout);
+        char choice;
+        cv::Mat frame = cv::Mat(500, 1000, CV_8UC3);
+        while (true) {
+            // Clear the frame
+            frame = cv::Scalar(200, 200, 200);
+
+            cvui::text(frame, 350, 25, "Videos Available", 1.5, 0x000000);
+
+            for (int i = 0; i < currentPlaylist->videos.getSize(); ++i) {
+                string text =  currentPlaylist->videos.getIndexValue(i);
+                text= to_string(i + 1) + ". " + text.substr(text.find_last_of(  '/') + 1);
+                text = text.substr(text.find_last_of(  '\'') + 1);
+                cvui::text(frame, 50, 110 + i * 30, text, 0.8, 0x000000);
+            }
+
+            if (cvui::button(frame, 600, 100, 200, 50, "Back")) {
+                break;
+            }
+            // Update the cvui components
+            cvui::update();
+
+            // Show the frame
+            cv::imshow("Video Player Menu", frame);
+
+            // Check for keypress
+            choice = cv::waitKey(20);
+        }
     } else {
         cerr << "No playlist selected. Please select a playlist first." << endl;
     }
