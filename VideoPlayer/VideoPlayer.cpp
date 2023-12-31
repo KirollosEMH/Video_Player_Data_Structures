@@ -565,17 +565,62 @@ void VideoPlayer::addVideoRuntime() {
 }
 
 void VideoPlayer::removeVideoRuntime() {
-    if (currentPlaylist) {
-        cout << "Selected playlist: " << currentPlaylist->PlayListName << endl;
-        displayvideos();
-        int index;
-        cout << "Enter the Number of the video to remove: ";
-        cin >> index;
-        removeVideo(index-1);
-    } else {
-        cerr << "No playlist selected. Please select a playlist first." << endl;
+    cv::Mat frame = cv::Mat(500, 800, CV_8UC3);
+    int videoIndex = 0;
+    std::string indexStr;
+
+    while (true) {
+        frame = cv::Scalar(200, 200, 200);
+
+        cvui::text(frame, 50, 50, "Remove Video from Playlist", 1.5, 0x000000);
+
+        if (currentPlaylist) {
+            // Display playlist name
+            cvui::text(frame, 50, 80, "Playlist: " + currentPlaylist->PlayListName, 1.0, 0x000000);
+
+            // Display indices and names of videos in the playlist
+            for (size_t i = 0; i < currentPlaylist->videos.getSize(); ++i) {
+                std::string text = std::to_string(i + 1) + ". " + currentPlaylist->videos.getIndexValue(i);
+                text = text.substr(text.find_last_of('/') + 1);
+                cvui::text(frame, 50, 110 + i * 30, text, 0.8, 0x000000);
+            }
+
+            // Input field for the video index to remove
+            cvui::input(frame, 250, 350, 200, "Video Index", indexStr);
+            if (!indexStr.empty()) {
+                try {
+                    videoIndex = std::stoi(indexStr);
+
+                } catch (const std::invalid_argument& e) {
+                    std::cerr << "Invalid input for video index: " << e.what() << std::endl;
+                }
+            }
+        } else {
+            cvui::text(frame, 50, 80, "No playlist selected!", 0.8, 0x000000);
+        }
+
+        if (cvui::button(frame, 250, 400, "Remove Video")) {
+            if (currentPlaylist) {
+                removeVideo(videoIndex - 1); // Adjust for 1-based index
+
+            } else {
+                std::cerr << "No playlist selected. Please select a playlist first." << std::endl;
+            }
+        }
+
+
+
+        // Update cvui and display frame
+        cvui::update();
+        cv::imshow("Video Player Menu", frame);
+
+        char choice = cv::waitKey(20);
+        if (choice == 'q') {
+            break;
+        }
     }
 }
+
 
 
 CircularLinkedList<string> VideoPlayer::getCurrentPlaylist() {
