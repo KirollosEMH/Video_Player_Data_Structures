@@ -603,7 +603,7 @@ vector<VideoPlayer::Playlist> VideoPlayer::getPlaylists() {
 }
 
 void VideoPlayer::createPlaylist() {
-    Playlist newPlaylist;
+    //Playlist newPlaylist;
     //cout << "Enter the name for the new playlist: ";
     //getline(cin, newPlaylist.PlayListName);
     //playlists.push_back(newPlaylist);
@@ -631,8 +631,12 @@ void VideoPlayer::createPlaylist() {
         }
 
     }
-    newPlaylist.PlayListName = playlistName;
-    playlists.push_back(newPlaylist);
+    if (playlistName != ""){
+        Playlist newPlaylist;
+        newPlaylist.PlayListName = playlistName;
+        playlists.push_back(newPlaylist);
+    }
+    //playlists.push_back(newPlaylist);
 }
 
 void VideoPlayer::deletePlaylist() {
