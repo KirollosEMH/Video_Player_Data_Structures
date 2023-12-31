@@ -294,12 +294,13 @@ void VideoPlayer::VideoPlayerMainMenu() {
                     cvui::text(frame, 350, 25, "Videos Available", 1.5, 0x000000);
 
                     for (int i = 0; i < currentPlaylist->videos.getSize(); ++i) {
-                        string text = to_string(i + 1) + ". " + currentPlaylist->videos.getIndexValue(i);
-                        text= text.substr(text.find_last_of(  '/') + 1);
+                        string text =  currentPlaylist->videos.getIndexValue(i);
+                        text= to_string(i + 1) + ". " + text.substr(text.find_last_of(  '/') + 1);
+                        text = text.substr(text.find_last_of(  '\'') + 1);
                         cvui::text(frame, 50, 110 + i * 30, text, 0.8, 0x000000);
                     }
 
-                    if (cvui::button(frame, 50, 100 + 25 * playlists.size() + 50, 200, 50, "Back")) {
+                    if (cvui::button(frame, 600, 100, 200, 50, "Back")) {
                         break;
                     }
                     // Update the cvui components
@@ -318,6 +319,7 @@ void VideoPlayer::VideoPlayerMainMenu() {
 
         }
 
+        
         if (cvui::button(frame, x, y + buttonHeight * 9,buttonWidth,buttonHeight,  "Display Video Details")) {
             if (currentPlaylist) {
                 string displayVideoDetailsStr;
