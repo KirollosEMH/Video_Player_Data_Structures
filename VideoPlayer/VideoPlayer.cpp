@@ -222,7 +222,7 @@ void VideoPlayer::VideoPlayerMainMenu() {
         }
 
         if (cvui::button(frame, x, y + buttonHeight * 7,buttonWidth,buttonHeight,  "Organize Videos")) {
-            int choice_operation, old_pos, index;
+            int choice_operation , old_pos , index;
             string choiceStr, old_posStr, indexStr;
             displayvideos();
             if (currentPlaylist){
@@ -260,6 +260,7 @@ void VideoPlayer::VideoPlayerMainMenu() {
 
                     // Check for keypress
                     choice = cv::waitKey(20);
+
                 }
                 try {
                     choice_operation = stoi(choiceStr);
@@ -316,6 +317,7 @@ void VideoPlayer::VideoPlayerMainMenu() {
 
                         // Check for keypress
                         choice = cv::waitKey(20);
+
                     }
                 }
                 try {
@@ -767,10 +769,35 @@ vector<VideoPlayer::Playlist> VideoPlayer::getPlaylists() {
 
 void VideoPlayer::createPlaylist() {
     Playlist newPlaylist;
-    cout << "Enter the name for the new playlist: ";
-    getline(cin, newPlaylist.PlayListName);
+    //cout << "Enter the name for the new playlist: ";
+    //getline(cin, newPlaylist.PlayListName);
+    //playlists.push_back(newPlaylist);
+    //cout << "Playlist '" << newPlaylist.PlayListName << "' created." << endl;
+    cv::Mat frame = cv::Mat(500, 1000, CV_8UC3);
+    string playlistName;
+    while (true) {
+        frame = cv::Scalar(200, 200, 200);
+
+        cvui::text(frame, 250, 50, "Create Playlist", 1.5, 0x000000);
+
+        cvui::input(frame, 50, 100, 200, "Playlist Name", playlistName);
+
+        if (cvui::button(frame, 50, 200, 200, 50, "Create Playlist")) {
+            break;
+        }
+
+        // Update cvui and display frame
+        cvui::update();
+        cv::imshow("Video Player Menu", frame);
+
+        char choice = cv::waitKey(20);
+        if (choice == 'q') {
+            break;
+        }
+
+    }
+    newPlaylist.PlayListName = playlistName;
     playlists.push_back(newPlaylist);
-    cout << "Playlist '" << newPlaylist.PlayListName << "' created." << endl;
 }
 
 void VideoPlayer::deletePlaylist() {
