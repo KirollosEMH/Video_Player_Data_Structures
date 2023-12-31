@@ -241,9 +241,10 @@ void VideoPlayer::organizeVideosRuntime() {
             //cvui::text(frame, 350, 25, "Organize Videos", 1.5, 0x000000);
             cvui::text(frame, 300, 100, currentPlaylist ->PlayListName, 0.5, 0x000000);
             for (int i = 0; i < currentPlaylist->videos.getSize(); ++i) {
-                string text = currentPlaylist->videos.getIndexValue(i);
-                // format text to print only the video name
-                text = to_string(i + 1) + ". " + text.substr(text.find_last_of('/') + 1);
+                string text =  currentPlaylist->videos.getIndexValue(i);
+                text= text.substr(text.find_last_of(  '/') + 1);
+                text = text.substr(text.find_last_of(  '\\') + 1);
+                text = to_string(i + 1) + ". " + text;
                 cvui::text(frame, 300, 100 + 25 * (i+1), text , 0.5, 0x000000);
             }
 
