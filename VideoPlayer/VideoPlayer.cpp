@@ -2,6 +2,7 @@
 #include "VideoPlayer.h"
 #include <string>
 #include <fstream>
+#include <nfd.h>
 #define CVUI_IMPLEMENTATION
 #include "../cvui.h"
 
@@ -309,13 +310,22 @@ void VideoPlayer::playPreviousVideo() {
 
 void VideoPlayer::addVideoRuntime() {
     if (currentPlaylist) {
-        string videoPath;
-        cout << "Enter the path of the video to add: ";
-        getline(cin, videoPath);
-        //cout << videoPath;
-        addVideo(videoPath);
+        NFD_Init();
+
+        nfdchar_t *outPath;
+        nfdfilteritem_t filterItem = {"Videos", "mp4,mov,avi"};
+        nfdresult_t result = NFD_OpenDialog(&outPath, &filterItem, 1, NULL);
+
+        if (result == NFD_OKAY) {
+            addVideo(outPath);
+        } else if (result == NFD_CANCEL) {
+            std::cout << "User pressed cancel." << std::endl;
+        } else {
+            std::cerr << "Error opening file dialog." << std::endl;
+        }
+        NFD_Quit();
     } else {
-        cerr << "No playlist selected. Please select a playlist first." << endl;
+        std::cerr << "No playlist selected. Please select a playlist first." << std::endl;
     }
 }
 
